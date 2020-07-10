@@ -1,0 +1,9 @@
+autoload
+plugged
+plugged_test
+sessions
+.netrwhist
+plugins.vim
+svimrc.zip
+testrc.zip
+vimrc_newest.zip
