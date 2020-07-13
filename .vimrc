@@ -11,6 +11,9 @@ set nocompatible
             set linespace=6
         endif
 
+        set guifont=DroidSansMono\ Nerd\ Font:h12
+        set linespace=6
+
 " => Auto Install vim-plug --------------------------------------------------------------------------------
         if empty(glob('~/.vim/autoload/plug.vim'))
           silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
@@ -60,6 +63,42 @@ set nocompatible
         Plug 'sheerun/vim-polyglot'                                         "A collection of language packs for Vim
 
         call plug#end()
+
+        function! SaveModifiedFiles() abort
+            for buf in getbufinfo({'bufloaded': 1})
+                "echo buf.bufnr
+                if buf.changed
+                    :write
+                    echo buf.name
+                endif
+            endfor
+        endfunction
+
+        if has('nvim')
+            augroup TermGG
+                autocmd!
+                " 打开终端进入 insert 模式
+                autocmd TermOpen * startinsert
+                " 不滚动
+                autocmd TermOpen *[tT]est{.ts,.php,.js} call feedkeys("\<C-\>\<C-n>gg", 'n') | setl nonu nornu | | nmap <buffer> <cr> i<cr> | nmap <buffer> <ESC> :silent! bd!<CR>
+                " 执行完跳到开头
+                " autocmd TermClose *[tT]est{.ts,.php,.js} call feedkeys("\<C-\>\<C-n>gg", 'n') | nmap <buffer> <cr> i<cr> | nmap <buffer> <ESC> :silent! bd!<CR>
+            augroup END
+        else
+            function TermGg(...) abort
+                setl nonu nornu
+                nmap <buffer> <cr> :silent! bd!<CR> | nmap <buffer> <ESC> :silent! bd!<CR>
+                normal gg
+            endfunction
+
+            function! TermStrategy(cmd)
+                tabnew
+                call term_start(a:cmd, {"exit_cb": {->timer_start(100, function('TermGg'))}, "curwin": v:true })
+            endfunction
+
+            let g:test#custom_strategies = {'termOpen': function('TermStrategy')}
+            let g:test#strategy = 'termOpen'
+        endif
 
     " => Window switch ----------------------------
         nmap <silent><Space>1 :1wincmd w<CR>
@@ -116,24 +155,34 @@ set nocompatible
 
 " => Terminal --------------------------------------------------------------------------------------------
         " turn terminal to normal mode with escape
+        " start terminal in insert mode
+
         tnoremap <Esc> <C-\><C-n>
         inoremap <C-e> <C-o>$
         nmap <silent><Cr> :Leaderf mru<Cr>
         nnoremap <Space><Space>' :terminal<CR>
 
-        " start terminal in insert mode
-        au BufEnter * if &buftype == 'terminal' | :startinsert | endif
+        if has('nvim')
+            autocmd termOpen * set nonu nornu
+            nmap <silent>tsv :vsp<cr>:term<CR>
+            nmap <silent>tsg :sp<cr>:term<CR>
+        else
+            autocmd TerminalOpen * set nonu nornu
+            nmap <silent>tsv :vsp<cr>:term ++curwin<CR>
+            nmap <silent>tsg :sp<cr>:term ++curwin<CR>
+        endif
+
+        "au BufEnter * if &buftype == 'terminal' | :startinsert | endif
         " open terminal on ctrl+n
         function! OpenTerminal()
           split term://zsh
           resize 10
-          setlocal rnu
         endfunction
         if has('nvim')
             nnoremap <Space>' :call OpenTerminal()<CR>
         else
             nnoremap <Space>' :terminal<CR>
-            setlocal rnu!
+            set rnu!
             "set signcolumn=no
         endif
 
@@ -196,9 +245,7 @@ set nocompatible
         nmap <silent><Space>cl gcc
         vmap <silent><Space>cl gcc
         nmap <silent>sv :vsp<cr>
-        nmap <silent>svc :vsp<cr>:term<cr>
         nmap <silent>sg :sp<cr>
-        nmap <silent>sgc :sp<cr>:term<cr>
         nmap <silent>sq :q<cr>
         nmap <silent>U <c-r>
         nmap <silent><c-h> <c-w>h
@@ -278,19 +325,20 @@ set nocompatible
         "let g:coc_snippet_next = '<tab>'
 
 " => NERDTree ---------------------------------------------------------------
-    map <Space>ft :NERDTreeToggle<CR>
+    map <silent><Space>ft :NERDTreeToggle<CR>
 
 " => Vim-test ---------------------------------------------------------------
         "Test nearest
-        nmap <silent> <Space>kn :TestNearest<CR>
+        nmap <silent> <Space>kn :call SaveModifiedFiles()<cr>:TestNearest<CR>
         "Test a file
-        nmap <silent> <Space>kf :TestFile<CR>
+        nmap <silent> <Space>kf :call SaveModifiedFiles()<cr>:TestFile<CR>
         "Test whole suite
-        nmap <silent> <Space>ks :TestSuite<CR>
+        nmap <silent> <Space>ks :call SaveModifiedFiles()<cr>:TestSuite<CR>
         "Test the last test
-        nmap <silent> <Space>kl :TestLast<CR>
+        nmap <silent> <Space>kl :call SaveModifiedFiles()<cr>:TestLast<CR>
         "Visit the last test
-        nmap <silent> <Space>kv :TestVisit<CR>
+        nmap <silent> <Space>kv :call SaveModifiedFiles()<cr>:TestVisit<CR>
+
 
 " => LeaderF --------------------------------------------------------------
         " don't show the help in normal mode
