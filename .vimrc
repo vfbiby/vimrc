@@ -56,6 +56,7 @@ set nocompatible
                     \'markdown', 'vue', 'yaml', 'html', 'php'] }
         Plug 'Sirver/ultisnips'
         Plug 'honza/vim-snippets'
+        Plug 'tpope/vim-fugitive'
 
 
         " => Language disabled syntax ------------------
@@ -74,31 +75,6 @@ set nocompatible
             endfor
         endfunction
 
-        if has('nvim')
-            augroup TermGG
-                autocmd!
-                " 打开终端进入 insert 模式
-                autocmd TermOpen * startinsert
-                " 不滚动
-                autocmd TermOpen *[tT]est{.ts,.php,.js} call feedkeys("\<C-\>\<C-n>gg", 'n') | setl nonu nornu | | nmap <buffer> <cr> i<cr> | nmap <buffer> <ESC> :silent! bd!<CR>
-                " 执行完跳到开头
-                " autocmd TermClose *[tT]est{.ts,.php,.js} call feedkeys("\<C-\>\<C-n>gg", 'n') | nmap <buffer> <cr> i<cr> | nmap <buffer> <ESC> :silent! bd!<CR>
-            augroup END
-        else
-            function TermGg(...) abort
-                setl nonu nornu
-                nmap <buffer> <cr> :silent! bd!<CR> | nmap <buffer> <ESC> :silent! bd!<CR>
-                normal gg
-            endfunction
-
-            function! TermStrategy(cmd)
-                tabnew
-                call term_start(a:cmd, {"exit_cb": {->timer_start(100, function('TermGg'))}, "curwin": v:true })
-            endfunction
-
-            let g:test#custom_strategies = {'termOpen': function('TermStrategy')}
-            let g:test#strategy = 'termOpen'
-        endif
 
     " => Window switch ----------------------------
         nmap <silent><Space>1 :1wincmd w<CR>
@@ -164,6 +140,8 @@ set nocompatible
 
         if has('nvim')
             autocmd termOpen * set nonu nornu
+            " 打开终端进入 insert 模式
+            autocmd TermOpen * startinsert
             nmap <silent>tsv :vsp<cr>:term<CR>
             nmap <silent>tsg :sp<cr>:term<CR>
         else
@@ -183,7 +161,6 @@ set nocompatible
         else
             nnoremap <Space>' :terminal<CR>
             set rnu!
-            "set signcolumn=no
         endif
 
 " => Sneak -----------------------------------------------------------------------------------------------
@@ -339,6 +316,30 @@ set nocompatible
         "Visit the last test
         nmap <silent> <Space>kv :call SaveModifiedFiles()<cr>:TestVisit<CR>
 
+        "let g:test#php#patterns = {'test': ['\v^\s*public function ([^ ]*)\('], 'namespace': []}
+        let g:test#php#patterns = {'test': ['\v^\s*public function ([0-9A-Za-z_\u4e00-\u9fa5]*)\('], 'namespace': []}
+
+        function TermGg(...) abort
+            setl nonu nornu
+            nmap <buffer> <cr> :silent! bd!<CR> | nmap <buffer> <ESC> :silent! bd!<CR>
+            normal gg
+        endfunction
+
+        function! TermStrategy(cmd)
+            tabnew
+            if has('nvim')
+                call termopen(a:cmd)
+                call feedkeys("\<C-\>\<C-n>gg", 'n') | setl nonu nornu | nmap <buffer> <cr> i<cr> | nmap <buffer> <ESC> :silent! bd!<CR>
+            else
+                let l:isWin = has('win32') && fnamemodify(&shell, ':t') ==? 'cmd.exe'
+                call term_start(!l:isWin ? ['/bin/sh', '-c', a:cmd] : ['cmd.exe', '/c', a:cmd],
+                            \ {"exit_cb": {->timer_start(100, function('TermGg'))}, "curwin": v:true })
+            endif
+        endfunction
+
+        let g:test#custom_strategies = {'termOpen': function('TermStrategy')}
+        let g:test#strategy = 'termOpen'
+
 
 " => LeaderF --------------------------------------------------------------
         " don't show the help in normal mode
@@ -356,8 +357,8 @@ set nocompatible
         let g:Lf_UseMemoryCache = 0
         let g:Lf_ShortcutF = "<Space>pf"
         nmap <c-p> <Space>pf
-        noremap <Space>bb :<C-U><C-R>=printf("Leaderf buffer %s", "")<CR><CR>
-        noremap <Space>fr :<C-U><C-R>=printf("Leaderf mru %s", "")<CR><CR>
+        noremap <silent><Space>bb :<C-U><C-R>=printf("Leaderf buffer %s", "")<CR><CR>
+        noremap <silent><Space>fr :<C-U><C-R>=printf("Leaderf mru %s", "")<CR><CR>
         " noremap <leader>ft :<C-U><C-R>=printf("Leaderf bufTag %s", "")<CR><CR>
         " noremap <leader>fl :<C-U><C-R>=printf("Leaderf line %s", "")<CR><CR>
 
