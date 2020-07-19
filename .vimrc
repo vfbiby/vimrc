@@ -150,18 +150,85 @@ set nocompatible
             nmap <silent>tsg :sp<cr>:term ++curwin<CR>
         endif
 
+        function! s:hideTerm() abort
+            let l:wins = s:getTermWins()
+            for l:win in l:wins
+                execute 'silent! close!' . l:win['winid']
+            endfor
+        endfunction
+
+        function! s:getTermWins() abort
+            let l:tabnr = tabpagenr()
+            let l:winlist = getwininfo()
+            let l:res = []
+            for l:win in l:winlist
+                if l:win['tabnr'] ==# l:tabnr && l:win['terminal']
+                    call add(l:res, l:win)
+                endif
+            endfor
+            return l:res
+        endfunction
+
+        function! s:getTermBufs() abort
+            let l:buflist = getbufinfo()
+            let l:res = []
+            for l:buf in l:buflist
+                let l:variables = get(l:buf, 'variables', {})
+                if get(l:variables, 'is_custom_term', v:false)
+                    call add(l:res, l:buf)
+                endif
+            endfor
+            return l:res
+        endfunction
+
+        function! s:openTerminal() abort
+            let l:wins = s:getTermWins()
+            let l:bufs = s:getTermBufs()
+            if len(l:bufs) > 0
+                botright split
+                execute 'b' . l:bufs[0]['bufnr']
+                for l:buf in l:bufs[1:]
+                    vsplit
+                    execute 'b' . l:buf['bufnr']
+                endfor
+            else
+                if has('nvim')
+                    botright split term://zsh
+                else
+                    botright terminal
+                endif
+                let b:is_stb = v:true
+                nnoremap q :call <SID>hideTerm()<cr>
+            endif
+            for l:win in l:wins
+                execute 'close! ' . l:win['winid']
+            endfor
+            resize 10
+        endfunction
+
+        augroup AuTerm
+            autocmd!
+            if has('nvim')
+                autocmd TermOpen * let b:is_custom_term = v:true
+            else
+                autocmd TerminalOpen * let b:is_custom_term = v:true
+            endif
+        augroup END
+
+        nnoremap <Space>' :call <SID>openTerminal()<cr>
+
         "au BufEnter * if &buftype == 'terminal' | :startinsert | endif
         " open terminal on ctrl+n
-        function! OpenTerminal()
-          split term://zsh
-          resize 10
-        endfunction
-        if has('nvim')
-            nnoremap <Space>' :call OpenTerminal()<CR>
-        else
-            nnoremap <Space>' :terminal<CR>
-            set rnu!
-        endif
+        "function! OpenTerminal()
+          "split term://zsh
+          "resize 10
+        "endfunction
+        "if has('nvim')
+            "nnoremap <Space>' :call OpenTerminal()<CR>
+        "else
+            "nnoremap <Space>' :terminal<CR>
+            "set rnu!
+        "endif
 
 " => Sneak -----------------------------------------------------------------------------------------------
         map s <Plug>Sneak_s
