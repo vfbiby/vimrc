@@ -32,19 +32,18 @@ set nocompatible
         Plug 'vfbiby/thunder-js-tester-strategy'
         Plug 'bronson/vim-visual-star-search'
         "Plug 'nelstrom/vim-textobj-rubyblock'
-        Plug 'xklalala/mh-vim-for-mocha-test-client'
+        "Plug 'xklalala/mh-vim-for-mocha-test-client'
         "Plug 'inkarkat/vim-ReplaceWithRegister'
         Plug 'phpactor/phpactor', {'for': 'php', 'branch': 'master', 'do': 'composer install --no-dev -o'}
         Plug 'Yggdroot/LeaderF', { 'do': './install.sh' }
         Plug 'neoclide/coc.nvim', {'branch': 'release'}
         let g:coc_global_extensions = ['coc-vimlsp', 'coc-snippets', 'coc-phpactor', 'coc-css', 'coc-html', 'coc-json', 'coc-tsserver', 'coc-phpls']
-        Plug 'mileszs/ack.vim'		                        				"Use ag to search
-        Plug 'rking/ag.vim'						                            "it's deprecated, but still work
-        Plug 'Chun-Yang/vim-action-ag'	                    				"Adds a 'ga' action to search any text object
+        Plug 'mileszs/ack.vim'
+        Plug 'rking/ag.vim'
+        Plug 'Chun-Yang/vim-action-ag'
         "Plug 'janko/vim-test'
         
         Plug 'vfbiby/thunder-js-tester-vim-test'
-        "Plug 'xklalala/mh-vim-for-mocha-test-client'
         Plug 'preservim/nerdtree'
         Plug 'tpope/vim-surround'
         Plug 'mg979/vim-visual-multi', {'branch': 'master'}
@@ -58,8 +57,8 @@ set nocompatible
         Plug 'justinmk/vim-sneak'
         Plug 'arzg/vim-colors-xcode'
         Plug 'preservim/nerdcommenter'
-        Plug 'Asheq/close-buffers.vim'                                      "Close buffers
-        Plug 'mikehaertl/pdv-standalone'                                    "PHP
+        Plug 'Asheq/close-buffers.vim'
+        Plug 'mikehaertl/pdv-standalone'
         Plug 'ryanoasis/vim-devicons'
         Plug 'mhinz/vim-startify'
         Plug 'terryma/vim-expand-region'
@@ -85,7 +84,7 @@ set nocompatible
 
         " => Language disabled syntax ------------------
         let g:polyglot_disabled = ['php', 'javascript']
-        Plug 'sheerun/vim-polyglot'                                         "A collection of language packs for Vim
+        Plug 'sheerun/vim-polyglot'
 
         call plug#end()
 
@@ -216,22 +215,22 @@ set nocompatible
         endfunction
 
     " => Folding ----------------------------------
-        set foldmethod=indent		                        				"Set folding by indent
-        set foldlevel=1                                                     "So we can see the function name"
+        set foldmethod=indent
+        set foldlevel=1
 
 " => Search -----------------------------------------------------------------------------------------------
 	" => Ag ----------------------------------------
         if executable('ag')
-          let g:ackprg = 'ag --vimgrep'			                     		"Ack use ag to be default tool
+          let g:ackprg = 'ag --vimgrep'
         endif
         nnoremap <Leader>f :Ack!<Space>
 
         " => Ag ----------------------------------------
-        let g:ag_prg="ag --nogroup --nocolor --column --vimgrep"        	"specify a custom ag options
-        let g:ag_working_path_mode="r"	                     				"always start searching from your project root instead of the cwd
+        let g:ag_prg="ag --nogroup --nocolor --column --vimgrep"
+        let g:ag_working_path_mode="r"
 
 	" => Vim-action-ag -----------------------------
-        let g:vim_action_ag_escape_chars = '#%.^$*+?()[{\\|'	        	"Set escape characters
+        let g:vim_action_ag_escape_chars = '#%.^$*+?()[{\\|'
 
 	" => Greplace ----------------------------------
         set grepprg=ag
@@ -417,8 +416,8 @@ set nocompatible
         set laststatus=2
 
 " => Other ------------------------------------
-        set belloff=all				                            			"Disable all bell
-        set encoding=utf-8			                            			"Set default encodeing utf-8
+        set belloff=all
+        set encoding=utf-8
         set clipboard+=unnamed
         set nowrap
         set lazyredraw
@@ -571,36 +570,6 @@ set nocompatible
         "let test#vimscript#runner = 'testify'
         "let g:test#php#patterns = {'test': ['\v^\s*public function ([^ ]*)\('], 'namespace': []}
         let g:test#php#patterns = {'test': ['\v^\s*public function ([0-9A-Za-z_\u4e00-\u9fa5]*)\('], 'namespace': []}
-
-        "function! ConnectMocha() 
-            "try 
-                "if has('nvim')
-                    "let g:channel = sockconnect('tcp', '127.0.0.1:40123')
-                "else
-                    "let g:channel = ch_open('localhost:40123')
-                "endif
-
-                "echom "服务器连接成功"
-            "catch
-                "echom "服务端连接失败, 请开启服务"
-            "finally
-            "endtry
-        "endfunction
-
-        "nmap <space>cnm :call ConnectMocha()<cr>
-
-        "function! SendMsg(message)
-            "try
-                "if has('nvim')
-                    "let abc = chansend(g:channel, a:message)
-                "else
-                    "let abc = ch_evalexpr(g:channel, a:message)
-                "endif
-            "catch
-                "echo 'error'
-            "finally
-            "endtry
-        "endfunction
 
         function! TermGg(...) abort
             setl nonu nornu
