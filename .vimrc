@@ -24,15 +24,27 @@ set nocompatible
 " => Plugin ---------------------------------------------------------------
         call plug#begin('~/.vim/plugged_test')
 
-        Plug 'inkarkat/vim-ReplaceWithRegister'
+
+
+        Plug 'liuchengxu/vista.vim'
+        Plug 'junegunn/gv.vim'
+        Plug 'airblade/vim-gitgutter'
+        Plug 'vfbiby/thunder-js-tester-strategy'
+        Plug 'bronson/vim-visual-star-search'
+        "Plug 'nelstrom/vim-textobj-rubyblock'
+        Plug 'xklalala/mh-vim-for-mocha-test-client'
+        "Plug 'inkarkat/vim-ReplaceWithRegister'
         Plug 'phpactor/phpactor', {'for': 'php', 'branch': 'master', 'do': 'composer install --no-dev -o'}
         Plug 'Yggdroot/LeaderF', { 'do': './install.sh' }
         Plug 'neoclide/coc.nvim', {'branch': 'release'}
-        let g:coc_global_extensions = ['coc-vimlsp', 'coc-snippets', 'coc-phpactor', 'coc-css', 'coc-html', 'coc-json', 'coc-tsserver']
+        let g:coc_global_extensions = ['coc-vimlsp', 'coc-snippets', 'coc-phpactor', 'coc-css', 'coc-html', 'coc-json', 'coc-tsserver', 'coc-phpls']
         Plug 'mileszs/ack.vim'		                        				"Use ag to search
         Plug 'rking/ag.vim'						                            "it's deprecated, but still work
         Plug 'Chun-Yang/vim-action-ag'	                    				"Adds a 'ga' action to search any text object
-        Plug 'janko/vim-test'
+        "Plug 'janko/vim-test'
+        
+        Plug 'vfbiby/thunder-js-tester-vim-test'
+        "Plug 'xklalala/mh-vim-for-mocha-test-client'
         Plug 'preservim/nerdtree'
         Plug 'tpope/vim-surround'
         Plug 'mg979/vim-visual-multi', {'branch': 'master'}
@@ -57,6 +69,18 @@ set nocompatible
         Plug 'Sirver/ultisnips'
         Plug 'honza/vim-snippets'
         Plug 'tpope/vim-fugitive'
+        Plug 'skwp/greplace.vim'
+        Plug 'vim-player/terminal.vim'
+        "Plug 'xklalala/vim-test-js-mocha-testing'
+        "Plug 'skywind3000/vim-keysound'
+        "Plug 'logico/typewriter-vim'
+        "Plug 'junegunn/goyo.vim'
+        "Plug 'junegunn/limelight.vim'
+
+        Plug 'kana/vim-textobj-user'
+        Plug 'kana/vim-textobj-function'
+        "Plug 'haya14busa/vim-textobj-function-syntax'
+        Plug 'thinca/vim-textobj-function-javascript'
 
 
         " => Language disabled syntax ------------------
@@ -65,6 +89,70 @@ set nocompatible
 
         call plug#end()
 
+" => Vista -----------------------------------------------------------------------------------------------
+        " How each level is indented and what to prepend.
+        " This could make the display more compact or more spacious.
+        " e.g., more compact: ["▸ ", ""]
+        " Note: this option only works the LSP executives, doesn't work for `:Vista ctags`.
+        let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
+
+        " Executive used when opening vista sidebar without specifying it.
+        " See all the avaliable executives via `:echo g:vista#executives`.
+        let g:vista_default_executive = 'ctags'
+
+        " Set the executive for some filetypes explicitly. Use the explicit executive
+        " instead of the default one for these filetypes when using `:Vista` without
+        " specifying the executive.
+        "let g:vista_executive_for = {
+              "\ 'cpp': 'vim_lsp',
+              "\ 'php': 'vim_lsp',
+              "\ }
+
+        " Declare the command including the executable and options used to generate ctags output
+        " for some certain filetypes.The file path will be appened to your custom command.
+        " For example:
+        let g:vista_ctags_cmd = {
+              \ 'haskell': 'hasktags -x -o - -c',
+              \ }
+
+        " To enable fzf's preview window set g:vista_fzf_preview.
+        " The elements of g:vista_fzf_preview will be passed as arguments to fzf#vim#with_preview()
+        " For example:
+        let g:vista_fzf_preview = ['right:50%']
+        " Ensure you have installed some decent font to show these pretty symbols, then you can enable icon for the kind.
+        let g:vista#renderer#enable_icon = 1
+
+        " The default icons can't be suitable for all the filetypes, you can extend it as you wish.
+        let g:vista#renderer#icons = {
+              \   "function": "\uf794",
+              \   "variable": "\uf71b",
+              \  }
+
+" => Git -------------------------------------------------------------------------------------------------
+    nmap <silent><Space>gs :Gstatus<CR>
+    nmap <silent><Space>gr :Gread<CR>
+    nmap <silent><Space>gd :Gdiff<CR>
+    nmap <silent><Space>gb :Gblame<CR>
+    nmap <silent><Space>gl :Glog<CR>
+    nmap <silent><Space>gv :GV<CR>
+    nmap <silent><Space>gva :GV<CR>
+    nmap <silent><Space>gvc :GV!<CR>
+
+    " => typewriter Sound -------------------------
+        "let g:keysound_enable = 1
+        "let g:keysound_theme = 'default'
+        " Activate FOCUS mode with F12
+        "nmap <F12> :Goyo <bar> Limelight!!<CR>"
+
+        " Change the cursor from block to i-beam in INSERT mode
+        "let &t_SI = "\e[5 q"
+        "let &t_EI = "\e[1 q"
+        "augroup myCmds
+            "au!
+            "autocmd VimEnter * silent !echo -ne "\e[1 q"
+        "augroup END
+
+    " => SaveModifiedFiles ------------------------
         function! SaveModifiedFiles() abort
             for buf in getbufinfo({'bufloaded': 1})
                 "echo buf.bufnr
@@ -75,6 +163,26 @@ set nocompatible
             endfor
         endfunction
 
+    " => tabnew % position-------------------------
+        let g:tabLeaveInfo = {}
+
+        function! s:tableave() abort
+            let g:tabLeaveInfo.bufnr = bufnr()
+            let g:tabLeaveInfo.cursorPos = getcurpos()
+        endfunction
+
+        function! s:tabenter(...) abort
+            let l:bufnr = bufnr()
+            if get(g:tabLeaveInfo, 'bufnr', -1) ==# l:bufnr
+                call setpos('.', g:tabLeaveInfo.cursorPos)
+            endif
+        endfunction
+
+        augroup TabNewG
+            autocmd!
+            autocmd TabLeave * call s:tableave()
+            autocmd TabNew * call timer_start(10, function('s:tabenter'))
+        augroup END
 
     " => Window switch ----------------------------
         nmap <silent><Space>1 :1wincmd w<CR>
@@ -89,7 +197,7 @@ set nocompatible
 
     " => Lightline --------------------------------
         let g:lightline = {
-              \ 'colorscheme': 'wombat',
+              \ 'colorscheme': 'powerline',
               \ 'active': {
               \   'left': [ [ 'mode', 'paste' ],
               \             [ 'window', 'filename', 'modified'] ]
@@ -125,6 +233,10 @@ set nocompatible
 	" => Vim-action-ag -----------------------------
         let g:vim_action_ag_escape_chars = '#%.^$*+?()[{\\|'	        	"Set escape characters
 
+	" => Greplace ----------------------------------
+        set grepprg=ag
+        let g:grep_cmd_opts = '--line-numbers --noheading'
+
 " => Vim-Prettier ----------------------------------------------------------------------------------------
         let g:prettier#autoformat = 0
         autocmd BufWritePre *.js,*.json,*.css,*.scss,*.less,*.graphql,*.php Prettier
@@ -132,15 +244,29 @@ set nocompatible
 " => Terminal --------------------------------------------------------------------------------------------
         " turn terminal to normal mode with escape
         " start terminal in insert mode
+        nnoremap <silent><Space>tk :TermvimTopToggle<CR>
+        nnoremap <silent><Space>twk :TermvimTopToggle watch<CR>
+        nnoremap <silent><Space>tj :TermvimBottomToggle<CR>
+        nnoremap <silent><Space>twj :TermvimBottomToggle watch<CR>
+        nnoremap <silent><Space>th :TermvimLeftToggle<CR>
+        nnoremap <silent><Space>twh :TermvimLeftToggle watch<CR>
+        nnoremap <silent><Space>tl :TermvimRightToggle<CR>
+        nnoremap <silent><Space>twl :TermvimRightToggle watch<CR>
+        nnoremap <silent><Space>tt :TermvimTabToggle<CR>
+        nnoremap <silent><Space>twt :TermvimTabToggle watch<CR>
+
+        let g:termvim_top_size = 12
+        let g:termvim_right_size = 60
+        let g:termvim_left_size = 40
+        let g:termvim_bottom_size = 10
 
         tnoremap <Esc> <C-\><C-n>
         inoremap <C-e> <C-o>$
-        nmap <silent><Cr> :Leaderf mru<Cr>
+        "nmap <silent><Cr> :Leaderf mru<Cr>
         nnoremap <Space><Space>' :terminal<CR>
 
         if has('nvim')
-            autocmd termOpen * set nonu nornu
-            " 打开终端进入 insert 模式
+            autocmd TermOpen * set nonu nornu
             autocmd TermOpen * startinsert
             nmap <silent>tsv :vsp<cr>:term<CR>
             nmap <silent>tsg :sp<cr>:term<CR>
@@ -150,72 +276,116 @@ set nocompatible
             nmap <silent>tsg :sp<cr>:term ++curwin<CR>
         endif
 
-        function! s:hideTerm() abort
-            let l:wins = s:getTermWins()
-            for l:win in l:wins
-                execute 'silent! close!' . l:win['winid']
-            endfor
-        endfunction
+	" => Save Terminal position --------------------
+    let s:tabTermInfo = {}
+    let s:lastWinId = {}
 
-        function! s:getTermWins() abort
-            let l:tabnr = tabpagenr()
-            let l:winlist = getwininfo()
-            let l:res = []
-            for l:win in l:winlist
-                if l:win['tabnr'] ==# l:tabnr && l:win['terminal']
-                    call add(l:res, l:win)
-                endif
-            endfor
-            return l:res
-        endfunction
-
-        function! s:getTermBufs() abort
-            let l:buflist = getbufinfo()
-            let l:res = []
-            for l:buf in l:buflist
-                let l:variables = get(l:buf, 'variables', {})
-                if get(l:variables, 'is_custom_term', v:false)
-                    call add(l:res, l:buf)
-                endif
-            endfor
-            return l:res
-        endfunction
-
-        function! s:openTerminal() abort
-            let l:wins = s:getTermWins()
-            let l:bufs = s:getTermBufs()
-            if len(l:bufs) > 0
-                botright split
-                execute 'b' . l:bufs[0]['bufnr']
-                for l:buf in l:bufs[1:]
-                    vsplit
-                    execute 'b' . l:buf['bufnr']
-                endfor
-            else
-                if has('nvim')
-                    botright split term://zsh
-                else
-                    botright terminal
-                endif
-                let b:is_stb = v:true
-                nnoremap q :call <SID>hideTerm()<cr>
+    function! s:hideTerm() abort
+        let l:winId = win_getid()
+        let l:wins = s:getTermWins()
+        let l:isRightWin = v:false
+        for l:win in l:wins
+            if l:win['winid'] ==# l:winId
+                let l:isRightWin = v:true
             endif
-            for l:win in l:wins
-                execute 'close! ' . l:win['winid']
-            endfor
-            resize 10
-        endfunction
+        endfor
+        if !l:isRightWin
+            return
+        endif
+        let s:lastWinId[tabpagenr()] = l:winId
+        let s:tabTermInfo[tabpagenr()] = l:wins
+        for l:win in l:wins
+            execute 'silent! close!' . l:win['winid']
+        endfor
+    endfunction
 
-        augroup AuTerm
-            autocmd!
+    function! s:getTermWins() abort
+        let l:tabnr = tabpagenr()
+        let l:winlist = getwininfo()
+        let l:term_wins = []
+        for l:win in l:winlist
+            if l:win['tabnr'] ==# l:tabnr
+                call add(l:term_wins, l:win)
+            endif
+        endfor
+        let l:bottomRow = -1
+        for l:win in l:term_wins
+            if win_screenpos(l:win.winnr)[0] > l:bottomRow
+                let l:bottomRow = win_screenpos(l:win.winnr)[0]
+            endif
+        endfor
+        let l:res = []
+        let l:isAllTerms = v:true
+        for l:win in l:term_wins
+            if win_screenpos(l:win.winnr)[0] ==# l:bottomRow
+                if !l:win['terminal']
+                    let l:isAllTerms = v:false
+                endif
+                call add(l:res, l:win)
+            endif
+        endfor
+        if !l:isAllTerms
+            return []
+        endif
+        return l:res
+    endfunction
+
+    function! s:getTabTerms() abort
+        let l:termWins = get(s:tabTermInfo, tabpagenr(), [])
+        let l:res = []
+        for l:win in l:termWins
+            if bufexists(l:win['bufnr'])
+                call add(l:res, l:win)
+            endif
+        endfor
+        return l:res
+    endfunction
+
+    function! s:openTerminal() abort
+        let l:wins = s:getTermWins()
+        if len(l:wins) > 0
+            return
+        endif
+        let l:tabWins = s:getTabTerms()
+        let l:first_winid = 0
+        let l:lastWinId = 0
+        if len(l:tabWins) > 0
+            botright split
+            execute 'b' . l:tabWins[0]['bufnr']
+            if get(s:lastWinId, tabpagenr(), 0) ==# l:tabWins[0]['winid']
+                let l:lastWinId = win_getid()
+            endif
+            let l:first_winid = win_getid()
+            for l:buf in l:tabWins[1:]
+                vsplit
+                execute 'b' . l:buf['bufnr']
+                if get(s:lastWinId, tabpagenr(), 0) ==# l:buf['winid']
+                    let l:lastWinId = win_getid()
+                endif
+            endfor
+        else
             if has('nvim')
-                autocmd TermOpen * let b:is_custom_term = v:true
+                botright split term://zsh
             else
-                autocmd TerminalOpen * let b:is_custom_term = v:true
+                botright terminal
             endif
-        augroup END
+            nnoremap q :call <SID>hideTerm()<cr>
+        endif
+        resize 10
+        if l:lastWinId
+            let l:first_winid = l:lastWinId
+        endif
+        if l:first_winid
+            call win_gotoid(l:first_winid)
+            if has('nvim')
+                startinsert
+            else
+                normal a
+            endif
+        endif
+    endfunction
 
-        nnoremap <Space>' :call <SID>openTerminal()<cr>
+    nnoremap <Space>' :call <SID>openTerminal()<cr>
 
         "au BufEnter * if &buftype == 'terminal' | :startinsert | endif
         " open terminal on ctrl+n
@@ -233,10 +403,10 @@ set nocompatible
 " => Sneak -----------------------------------------------------------------------------------------------
         map s <Plug>Sneak_s
         map S <Plug>Sneak_S
-        "map f <Plug>Sneak_f
-        "map F <Plug>Sneak_F
-        "map t <Plug>Sneak_t
-        "map T <Plug>Sneak_T
+        map f <Plug>Sneak_f
+        map F <Plug>Sneak_F
+        map t <Plug>Sneak_t
+        map T <Plug>Sneak_T
 
 " => Indent ---------------------------------------------------------------
         set tabstop=4
@@ -282,15 +452,15 @@ set nocompatible
         syntax on
         filetype plugin on
         set mouse=a
+        nmap <silent><space>wm :tabnew %<cr>
         nmap <silent><Space>fs :w<cr>
         nmap <silent><Space>fS :wa<cr>
         nmap <silent><Space>jn i<cr><Esc>
         nmap <silent><Space>jo i<cr><Esc>k$
-        nmap <silent><Space>cl gcc
-        vmap <silent><Space>cl gcc
         nmap <silent>sv :vsp<cr>
         nmap <silent>sg :sp<cr>
         nmap <silent>sq :q<cr>
+        nmap <silent>sQ :qa<cr>
         nmap <silent>U <c-r>
         nmap <silent><c-h> <c-w>h
         nmap <silent><c-j> <c-w>j
@@ -308,8 +478,10 @@ set nocompatible
         set ruler
         set incsearch
         set hlsearch
+        "colorscheme typewriter-night
         colorscheme onedark
         "colorscheme xcodewwdc
+        "colorscheme xcodelight
         nmap <Leader>ev :e ~/.vim/.vimrc<cr>
         nmap <Leader>te :b term<cr>
         map Y y$
@@ -337,6 +509,13 @@ set nocompatible
         filetype indent on
         " => Javascript 
         autocmd FileType javascript set tabstop=2 shiftwidth=2 expandtab ai
+
+        " => Vim 
+        autocmd FileType vim set tabstop=2 shiftwidth=2 expandtab ai
+
+        " => Shell 
+        autocmd FileType sh set tabstop=2 shiftwidth=2 expandtab ai
+        autocmd BufRead *.bats setlocal filetype=sh
 
         " => json
         autocmd FileType json set tabstop=2 shiftwidth=2 expandtab ai
@@ -370,8 +549,12 @@ set nocompatible
 
 " => NERDTree ---------------------------------------------------------------
     map <silent><Space>ft :NERDTreeToggle<CR>
+    map <silent><Space>fv :NERDTreeFind<CR>
 
 " => Vim-test ---------------------------------------------------------------
+        let g:test#javascript#runner = 'mocha'
+        "let test#javascript#mocha#strategy = 'mocha'
+
         "Test nearest
         nmap <silent> <Space>kn :call SaveModifiedFiles()<cr>:TestNearest<CR>
         "Test a file
@@ -383,12 +566,46 @@ set nocompatible
         "Visit the last test
         nmap <silent> <Space>kv :call SaveModifiedFiles()<cr>:TestVisit<CR>
 
+        "let test#enabled_runners = ["javascript#mocha"]
+        "let g:test#javascript#mocha#file_pattern = '.*\.spec\.js'
+        "let test#vimscript#runner = 'testify'
         "let g:test#php#patterns = {'test': ['\v^\s*public function ([^ ]*)\('], 'namespace': []}
         let g:test#php#patterns = {'test': ['\v^\s*public function ([0-9A-Za-z_\u4e00-\u9fa5]*)\('], 'namespace': []}
 
-        function TermGg(...) abort
+        "function! ConnectMocha() 
+            "try 
+                "if has('nvim')
+                    "let g:channel = sockconnect('tcp', '127.0.0.1:40123')
+                "else
+                    "let g:channel = ch_open('localhost:40123')
+                "endif
+
+                "echom "服务器连接成功"
+            "catch
+                "echom "服务端连接失败, 请开启服务"
+            "finally
+            "endtry
+        "endfunction
+
+        "nmap <space>cnm :call ConnectMocha()<cr>
+
+        "function! SendMsg(message)
+            "try
+                "if has('nvim')
+                    "let abc = chansend(g:channel, a:message)
+                "else
+                    "let abc = ch_evalexpr(g:channel, a:message)
+                "endif
+            "catch
+                "echo 'error'
+            "finally
+            "endtry
+        "endfunction
+
+        function! TermGg(...) abort
             setl nonu nornu
-            nmap <buffer> <cr> :silent! bd!<CR> | nmap <buffer> <ESC> :silent! bd!<CR>
+            nmap <buffer> <cr> :silent! bd!<CR>:tabprevious<CR>
+            nmap <buffer> <ESC> :silent! bd!<CR>:tabprevious<CR>
             normal gg
         endfunction
 
@@ -396,7 +613,10 @@ set nocompatible
             tabnew
             if has('nvim')
                 call termopen(a:cmd)
-                call feedkeys("\<C-\>\<C-n>gg", 'n') | setl nonu nornu | nmap <buffer> <cr> i<cr> | nmap <buffer> <ESC> :silent! bd!<CR>
+                call feedkeys("\<C-\>\<C-n>gg", 'n')
+                setl nonu nornu
+                nmap <buffer> <silent><cr> :silent! bd!<CR>:tabprevious<CR>
+                nmap <buffer> <silent><ESC> :silent! bd!<CR>:tabprevious<CR>
             else
                 let l:isWin = has('win32') && fnamemodify(&shell, ':t') ==? 'cmd.exe'
                 call term_start(!l:isWin ? ['/bin/sh', '-c', a:cmd] : ['cmd.exe', '/c', a:cmd],
@@ -404,8 +624,9 @@ set nocompatible
             endif
         endfunction
 
-        let g:test#custom_strategies = {'termOpen': function('TermStrategy')}
+        let g:test#custom_strategies = {'termOpen': function('TermStrategy'), 'jsMochaTestServer': function('strategy#JavascriptMochaStratey')}
         let g:test#strategy = 'termOpen'
+        let g:test#javascript#mocha#strategy = 'jsMochaTestServer'
 
 
 " => LeaderF --------------------------------------------------------------
@@ -425,24 +646,26 @@ set nocompatible
         let g:Lf_ShortcutF = "<Space>pf"
         nmap <c-p> <Space>pf
         noremap <silent><Space>bb :<C-U><C-R>=printf("Leaderf buffer %s", "")<CR><CR>
+        noremap <silent><Space>ff :<C-U><C-R>=printf("Leaderf function %s", "")<CR><CR>
         noremap <silent><Space>fr :<C-U><C-R>=printf("Leaderf mru %s", "")<CR><CR>
-        " noremap <leader>ft :<C-U><C-R>=printf("Leaderf bufTag %s", "")<CR><CR>
-        " noremap <leader>fl :<C-U><C-R>=printf("Leaderf line %s", "")<CR><CR>
+        "noremap <silent><C-M> :<C-U><C-R>=printf("Leaderf mru %s", "")<CR><CR>
+         noremap <leader>ft :<C-U><C-R>=printf("Leaderf bufTag %s", "")<CR><CR>
+         noremap <leader>fl :<C-U><C-R>=printf("Leaderf line %s", "")<CR><CR>
 
-        " noremap <C-B> :<C-U><C-R>=printf("Leaderf! rg --current-buffer -e %s ", expand("<cword>"))<CR>
-        " noremap <C-F> :<C-U><C-R>=printf("Leaderf! rg -e %s ", expand("<cword>"))<CR>
-        " " search visually selected text literally
-        " xnoremap gf :<C-U><C-R>=printf("Leaderf! rg -F -e %s ", leaderf#Rg#visual())<CR>
-        " noremap go :<C-U>Leaderf! rg --recall<CR>
+         "noremap <C-B> :<C-U><C-R>=printf("Leaderf! rg --current-buffer -e %s ", expand("<cword>"))<CR>
+         "noremap <C-F> :<C-U><C-R>=printf("Leaderf! rg -e %s ", expand("<cword>"))<CR>
+         "" search visually selected text literally
+         "xnoremap gf :<C-U><C-R>=printf("Leaderf! rg -F -e %s ", leaderf#Rg#visual())<CR>
+         "noremap go :<C-U>Leaderf! rg --recall<CR>
 
-        " " should use `Leaderf gtags --update` first
-        " let g:Lf_GtagsAutoGenerate = 0
-        " let g:Lf_Gtagslabel = 'native-pygments'
-        " noremap <leader>fr :<C-U><C-R>=printf("Leaderf! gtags -r %s --auto-jump", expand("<cword>"))<CR><CR>
-        " noremap <leader>fd :<C-U><C-R>=printf("Leaderf! gtags -d %s --auto-jump", expand("<cword>"))<CR><CR>
-        " noremap <leader>fo :<C-U><C-R>=printf("Leaderf! gtags --recall %s", "")<CR><CR>
-        " noremap <leader>fn :<C-U><C-R>=printf("Leaderf gtags --next %s", "")<CR><CR>
-        " noremap <leader>fp :<C-U><C-R>=printf("Leaderf gtags --previous %s", "")<CR><CR>
+         "" should use `Leaderf gtags --update` first
+         "let g:Lf_GtagsAutoGenerate = 0
+         "let g:Lf_Gtagslabel = 'native-pygments'
+         "noremap <leader>fr :<C-U><C-R>=printf("Leaderf! gtags -r %s --auto-jump", expand("<cword>"))<CR><CR>
+         "noremap <leader>fd :<C-U><C-R>=printf("Leaderf! gtags -d %s --auto-jump", expand("<cword>"))<CR><CR>
+         "noremap <leader>fo :<C-U><C-R>=printf("Leaderf! gtags --recall %s", "")<CR><CR>
+         "noremap <leader>fn :<C-U><C-R>=printf("Leaderf gtags --next %s", "")<CR><CR>
+         "noremap <leader>fp :<C-U><C-R>=printf("Leaderf gtags --previous %s", "")<CR><CR>
 
 
 " => Phpactor -------------------------------------------------------------
@@ -456,10 +679,10 @@ set nocompatible
         nmap <Space>pn :call phpactor#Navigate()<CR>
 
         " Goto definition of class or class member under the cursor
-        nmap <Space>gd :call phpactor#GotoDefinition()<CR>
-        nmap <Space>gdh :call phpactor#GotoDefinitionHsplit()<CR>
-        nmap <Space>gdv :call phpactor#GotoDefinitionVsplit()<CR>
-        nmap <Space>gdt :call phpactor#GotoDefinitionTab()<CR>
+        nmap <Space>pd :call phpactor#GotoDefinition()<CR>
+        nmap <Space>pdh :call phpactor#GotoDefinitionHsplit()<CR>
+        nmap <Space>pdv :call phpactor#GotoDefinitionVsplit()<CR>
+        nmap <Space>pdt :call phpactor#GotoDefinitionTab()<CR>
 
         " Transform the classes in the current file
         nmap <Space>pt :call phpactor#Transform()<CR>
@@ -535,7 +758,7 @@ set nocompatible
         nmap <silent> gd <Plug>(coc-definition)
         nmap <silent> gy <Plug>(coc-type-definition)
         "nmap <silent> gi <Plug>(coc-implementation)
-        nmap <silent> gr <Plug>(coc-references)
+        nmap <silent> rr <Plug>(coc-references)
 
         " Use K to show documentation in preview window
         nnoremap <silent> K :call <SID>show_documentation()<CR>
@@ -614,3 +837,7 @@ set nocompatible
         nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
         " Resume latest coc list
         nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
+
+        if filereadable(expand("$HOME/.vim/.my.vimrc"))    
+            source ~/.vim/.my.vimrc
+        endif
