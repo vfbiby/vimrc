@@ -5,14 +5,33 @@ let &packpath = &runtimepath
 set nocompatible
 "let mapleader=","
 
-    " => Macvim options ---------------------------
+
+
+
+" => Macvim options  --------------------------------------------------------------------------------------
         if has("gui_macvim")
-            set guifont=DroidSansMono\ Nerd\ Font:h12
-            set linespace=6
+          "set guifont=DejaVuSansMono\ Nerd\ Font\ Mono:h12
+          set guifont=FiraCode\ Nerd\ Font\ Mono:h12
+          set linespace=6
         endif
 
-        set guifont=DroidSansMono\ Nerd\ Font:h12
-        set linespace=6
+" => Neovide ----------------------------------------------------------------------------------------------
+        if exists('g:neovide')
+          set guifont=FiraCode\ Nerd\ Font\ Mono,Yuanti\ SC:h13
+          set linespace=6
+          let g:neovide_cursor_animation_length=0.1
+          let g:neovide_cursor_trail_length=0.8
+          "set guifont=FiraCode\ Nerd\ Font\ Mono,Yuanti\ SC:h14
+          "let g:neovide_no_idle=v:true
+          "let g:neovide_fullscreen=v:true
+          "let g:neovide_cursor_vfx_mode = "torpedo"
+          "let g:neovide_cursor_vfx_mode = "railgun"
+          "let g:neovide_cursor_antialiasing=v:true
+          "let g:neovide_refresh_rate=140
+        endif
+
+        "set guifont=DejaVuSansMono\ Nerd\ Font\ Mono,Gulim,Yu\ Mincho,NSimSun:h14
+        "set guifont=Helvetica:h14
 
 " => Auto Install vim-plug --------------------------------------------------------------------------------
         if empty(glob('~/.vim/autoload/plug.vim'))
@@ -26,6 +45,18 @@ set nocompatible
 
 
 
+        Plug 'AndrewRadev/dsf.vim'
+        Plug 'AndrewRadev/tagalong.vim'
+        Plug 'AndrewRadev/splitjoin.vim'
+        Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+        "Plug 'michaeljsmith/vim-indent-object'
+        Plug 'leoatchina/vim-object'
+        Plug 'vim-scripts/ReplaceWithRegister'
+        Plug 'mattn/calendar-vim'
+        Plug 'uguu-org/vim-matrix-screensaver'
+        Plug 'tommcdo/vim-exchange'
+        Plug 'mcchrish/nnn.vim'
+        Plug 'mattn/emmet-vim'
         Plug 'liuchengxu/vista.vim'
         Plug 'junegunn/gv.vim'
         Plug 'airblade/vim-gitgutter'
@@ -37,7 +68,7 @@ set nocompatible
         Plug 'phpactor/phpactor', {'for': 'php', 'branch': 'master', 'do': 'composer install --no-dev -o'}
         Plug 'Yggdroot/LeaderF', { 'do': './install.sh' }
         Plug 'neoclide/coc.nvim', {'branch': 'release'}
-        let g:coc_global_extensions = ['coc-vimlsp', 'coc-snippets', 'coc-phpactor', 'coc-css', 'coc-html', 'coc-json', 'coc-tsserver', 'coc-phpls']
+        let g:coc_global_extensions = ['coc-vimlsp', 'coc-java', 'coc-snippets', 'coc-phpactor', 'coc-css', 'coc-html', 'coc-json', 'coc-tsserver', 'coc-phpls']
         Plug 'mileszs/ack.vim'
         Plug 'rking/ag.vim'
         Plug 'Chun-Yang/vim-action-ag'
@@ -54,7 +85,6 @@ set nocompatible
         Plug 'ryanoasis/vim-devicons'
         Plug 'jiangmiao/auto-pairs'    
         Plug 'terryma/vim-expand-region'
-        Plug 'justinmk/vim-sneak'
         Plug 'arzg/vim-colors-xcode'
         Plug 'preservim/nerdcommenter'
         Plug 'Asheq/close-buffers.vim'
@@ -63,8 +93,7 @@ set nocompatible
         Plug 'mhinz/vim-startify'
         Plug 'terryma/vim-expand-region'
         Plug 'justinmk/vim-sneak'
-        Plug 'prettier/vim-prettier', { 'do': 'yarn install', 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 
-                    \'markdown', 'vue', 'yaml', 'html', 'php'] }
+        Plug 'prettier/vim-prettier', {'do': 'yarn install'}
         Plug 'Sirver/ultisnips'
         Plug 'honza/vim-snippets'
         Plug 'tpope/vim-fugitive'
@@ -87,6 +116,24 @@ set nocompatible
         Plug 'sheerun/vim-polyglot'
 
         call plug#end()
+" => tagalong --------------------------------------------------------------------------------------------
+        let g:tagalong_additional_filetypes = ['blade']
+
+" => dsf -------------------------------------------------------------------------------------------------
+        let g:dsf_no_mappings = 1
+        nmap dsf <Plug>DsfDelete
+        nmap csf <Plug>DsfChange
+        nmap dsnf <Plug>DsfNextDelete
+        nmap csnf <Plug>DsfNextChange
+        omap iaf <Plug>DsfTextObjectA
+        xmap iaf <Plug>DsfTextObjectA
+        omap iif <Plug>DsfTextObjectI
+        xmap iif <Plug>DsfTextObjectI
+
+" => NERDTree --------------------------------------------------------------------------------------------
+
+        let g:NERDTreeDirArrowExpandable = '▸'
+        let g:NERDTreeDirArrowCollapsible = '▾'
 
 " => Vista -----------------------------------------------------------------------------------------------
         " How each level is indented and what to prepend.
@@ -133,6 +180,7 @@ set nocompatible
     nmap <silent><Space>gd :Gdiff<CR>
     nmap <silent><Space>gb :Gblame<CR>
     nmap <silent><Space>gl :Glog<CR>
+    nmap <silent><Space>gp :Gpull<CR>
     nmap <silent><Space>gv :GV<CR>
     nmap <silent><Space>gva :GV<CR>
     nmap <silent><Space>gvc :GV!<CR>
@@ -161,6 +209,9 @@ set nocompatible
                 endif
             endfor
         endfunction
+
+    " => Auto create dir of new file --------------
+        cnoremap mk. !mkdir -p <c-r>=expand("%:h")<cr>/
 
     " => tabnew % position-------------------------
         let g:tabLeaveInfo = {}
@@ -261,6 +312,7 @@ set nocompatible
 
         tnoremap <Esc> <C-\><C-n>
         inoremap <C-e> <C-o>$
+        inoremap <C-a> <C-o>^
         "nmap <silent><Cr> :Leaderf mru<Cr>
         nnoremap <Space><Space>' :terminal<CR>
 
@@ -402,10 +454,10 @@ set nocompatible
 " => Sneak -----------------------------------------------------------------------------------------------
         map s <Plug>Sneak_s
         map S <Plug>Sneak_S
-        map f <Plug>Sneak_f
-        map F <Plug>Sneak_F
-        map t <Plug>Sneak_t
-        map T <Plug>Sneak_T
+        "map f <Plug>Sneak_f
+        "map F <Plug>Sneak_F
+        "map t <Plug>Sneak_t
+        "map T <Plug>Sneak_T
 
 " => Indent ---------------------------------------------------------------
         set tabstop=4
@@ -451,6 +503,8 @@ set nocompatible
         syntax on
         filetype plugin on
         set mouse=a
+        set nu
+        set rnu
         nmap <silent><space>wm :tabnew %<cr>
         nmap <silent><Space>fs :w<cr>
         nmap <silent><Space>fS :wa<cr>
@@ -491,18 +545,18 @@ set nocompatible
         set guioptions-=r
         set guioptions-=R
         set guioptions-=e
-        set foldcolumn=1
-        hi foldcolumn guibg=bg
-        hi LineNr guibg=bg
-        set fillchars+=vert:\!
-        hi vertsplit cterm=none term=none guibg=bg
+        set foldcolumn=0
+        "hi foldcolumn guibg=bg
+        "hi LineNr guibg=bg
+        "set fillchars+=vert:\!
+        "hi vertsplit cterm=none term=none guibg=bg
         " hi statusline guibg=DarkGray guifg=Green
         " hi statuslineNC guibg=Green
 
 " => Autocmd ----------------------------------------------------------------
         "autocmd BufRead .vimrc setlocal filetype=vim rnu
         autocmd FileType php setlocal omnifunc=phpactor#Complete
-        autocmd BufWritePost .vimrc source %
+        "autocmd BufWritePost .vimrc source $MYVIMRC
 
         " => AutoIndent -------------------------------------------------------------
         filetype indent on
@@ -518,6 +572,9 @@ set nocompatible
 
         " => json
         autocmd FileType json set tabstop=2 shiftwidth=2 expandtab ai
+
+        " => Html 
+        autocmd FileType html set tabstop=4 shiftwidth=4 expandtab ai
 
         " => Php 
         autocmd FileType php set tabstop=4 shiftwidth=4 expandtab ai
@@ -567,6 +624,7 @@ set nocompatible
 
         "let test#enabled_runners = ["javascript#mocha"]
         "let g:test#javascript#mocha#file_pattern = '.*\.spec\.js'
+        let g:test#javascript#mocha#file_pattern = '\v(tests?/.*|(test)|(spec))\.(js|jsx|coffee)$'
         "let test#vimscript#runner = 'testify'
         "let g:test#php#patterns = {'test': ['\v^\s*public function ([^ ]*)\('], 'namespace': []}
         let g:test#php#patterns = {'test': ['\v^\s*public function ([0-9A-Za-z_\u4e00-\u9fa5]*)\('], 'namespace': []}
@@ -600,6 +658,12 @@ set nocompatible
 
 " => LeaderF --------------------------------------------------------------
         " don't show the help in normal mode
+
+        let g:Lf_WildIgnore = {
+              \ 'dir': ['.svn','.git','.hg', 'node_modules'],
+              \ 'file': ['*.sw?','~$*','*.bak','*.exe','*.o','*.so','*.py[co]']
+              \}
+
         let g:Lf_HideHelp = 1
         let g:Lf_UseCache = 0
         let g:Lf_UseVersionControlTool = 0
@@ -618,23 +682,23 @@ set nocompatible
         noremap <silent><Space>ff :<C-U><C-R>=printf("Leaderf function %s", "")<CR><CR>
         noremap <silent><Space>fr :<C-U><C-R>=printf("Leaderf mru %s", "")<CR><CR>
         "noremap <silent><C-M> :<C-U><C-R>=printf("Leaderf mru %s", "")<CR><CR>
-         noremap <leader>ft :<C-U><C-R>=printf("Leaderf bufTag %s", "")<CR><CR>
-         noremap <leader>fl :<C-U><C-R>=printf("Leaderf line %s", "")<CR><CR>
+        noremap <leader>ft :<C-U><C-R>=printf("Leaderf bufTag %s", "")<CR><CR>
+        noremap <leader>fl :<C-U><C-R>=printf("Leaderf line %s", "")<CR><CR>
 
-         "noremap <C-B> :<C-U><C-R>=printf("Leaderf! rg --current-buffer -e %s ", expand("<cword>"))<CR>
-         "noremap <C-F> :<C-U><C-R>=printf("Leaderf! rg -e %s ", expand("<cword>"))<CR>
-         "" search visually selected text literally
-         "xnoremap gf :<C-U><C-R>=printf("Leaderf! rg -F -e %s ", leaderf#Rg#visual())<CR>
-         "noremap go :<C-U>Leaderf! rg --recall<CR>
+        "noremap <C-B> :<C-U><C-R>=printf("Leaderf! rg --current-buffer -e %s ", expand("<cword>"))<CR>
+        "noremap <C-F> :<C-U><C-R>=printf("Leaderf! rg -e %s ", expand("<cword>"))<CR>
+        "" search visually selected text literally
+        "xnoremap gf :<C-U><C-R>=printf("Leaderf! rg -F -e %s ", leaderf#Rg#visual())<CR>
+        "noremap go :<C-U>Leaderf! rg --recall<CR>
 
-         "" should use `Leaderf gtags --update` first
-         "let g:Lf_GtagsAutoGenerate = 0
-         "let g:Lf_Gtagslabel = 'native-pygments'
-         "noremap <leader>fr :<C-U><C-R>=printf("Leaderf! gtags -r %s --auto-jump", expand("<cword>"))<CR><CR>
-         "noremap <leader>fd :<C-U><C-R>=printf("Leaderf! gtags -d %s --auto-jump", expand("<cword>"))<CR><CR>
-         "noremap <leader>fo :<C-U><C-R>=printf("Leaderf! gtags --recall %s", "")<CR><CR>
-         "noremap <leader>fn :<C-U><C-R>=printf("Leaderf gtags --next %s", "")<CR><CR>
-         "noremap <leader>fp :<C-U><C-R>=printf("Leaderf gtags --previous %s", "")<CR><CR>
+        "" should use `Leaderf gtags --update` first
+        "let g:Lf_GtagsAutoGenerate = 0
+        "let g:Lf_Gtagslabel = 'native-pygments'
+        "noremap <leader>fr :<C-U><C-R>=printf("Leaderf! gtags -r %s --auto-jump", expand("<cword>"))<CR><CR>
+        "noremap <leader>fd :<C-U><C-R>=printf("Leaderf! gtags -d %s --auto-jump", expand("<cword>"))<CR><CR>
+        "noremap <leader>fo :<C-U><C-R>=printf("Leaderf! gtags --recall %s", "")<CR><CR>
+        "noremap <leader>fn :<C-U><C-R>=printf("Leaderf gtags --next %s", "")<CR><CR>
+        "noremap <leader>fp :<C-U><C-R>=printf("Leaderf gtags --previous %s", "")<CR><CR>
 
 
 " => Phpactor -------------------------------------------------------------
@@ -727,7 +791,7 @@ set nocompatible
         nmap <silent> gd <Plug>(coc-definition)
         nmap <silent> gy <Plug>(coc-type-definition)
         "nmap <silent> gi <Plug>(coc-implementation)
-        nmap <silent> rr <Plug>(coc-references)
+        nmap <silent> gr <Plug>(coc-references)
 
         " Use K to show documentation in preview window
         nnoremap <silent> K :call <SID>show_documentation()<CR>
