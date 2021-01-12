@@ -43,8 +43,7 @@ set nocompatible
 " => Plugin ---------------------------------------------------------------
         call plug#begin('~/.vim/plugged_test')
 
-
-
+        Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
         Plug 'AndrewRadev/dsf.vim'
         Plug 'AndrewRadev/tagalong.vim'
         Plug 'AndrewRadev/splitjoin.vim'
@@ -84,7 +83,7 @@ set nocompatible
         Plug 'pangloss/vim-javascript'
         Plug 'ryanoasis/vim-devicons'
         Plug 'jiangmiao/auto-pairs'    
-        Plug 'terryma/vim-expand-region'
+        "Plug 'terryma/vim-expand-region'
         Plug 'arzg/vim-colors-xcode'
         Plug 'preservim/nerdcommenter'
         Plug 'Asheq/close-buffers.vim'
@@ -179,8 +178,10 @@ set nocompatible
     nmap <silent><Space>gr :Gread<CR>
     nmap <silent><Space>gd :Gdiff<CR>
     nmap <silent><Space>gb :Gblame<CR>
-    nmap <silent><Space>gl :Glog<CR>
+    nmap <silent><Space>gl :Gpull<CR>
     nmap <silent><Space>gp :Gpull<CR>
+    nmap <silent><Space>glg :Glog<CR>
+    nmap <silent><Space>glc :0Gclog<CR>
     nmap <silent><Space>gv :GV<CR>
     nmap <silent><Space>gva :GV<CR>
     nmap <silent><Space>gvc :GV!<CR>
@@ -288,8 +289,8 @@ set nocompatible
         let g:grep_cmd_opts = '--line-numbers --noheading'
 
 " => Vim-Prettier ----------------------------------------------------------------------------------------
-        let g:prettier#autoformat = 0
-        autocmd BufWritePre *.js,*.json,*.css,*.scss,*.less,*.graphql,*.php Prettier
+        let g:prettier#exec_cmd_async = 1
+        autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html,*.php PrettierAsync
 
 " => Terminal --------------------------------------------------------------------------------------------
         " turn terminal to normal mode with escape
@@ -522,6 +523,7 @@ set nocompatible
         nmap <silent><Leader>sa ggVG
         nmap <silent><Leader><Space> :nohl<cr>
         nmap <silent><Space><cr> o<Esc>
+        nmap <silent><Space>bf :Format<cr>
         set clipboard=unnamed
         set nowrap
         set ignorecase
@@ -538,6 +540,8 @@ set nocompatible
         nmap <Leader>ev :e ~/.vim/.vimrc<cr>
         nmap <Leader>te :b term<cr>
         map Y y$
+        "highlight LineNr ctermfg=grey guifg=grey
+        "highlight CursorLineNr ctermfg=red guifg=red
 
 " => Guioptions -----------------------------------------------------------
         set guioptions-=l
@@ -560,13 +564,18 @@ set nocompatible
 
         " => AutoIndent -------------------------------------------------------------
         filetype indent on
-        " => Javascript 
+        " => Javascript
         autocmd FileType javascript set tabstop=2 shiftwidth=2 expandtab ai
+        " => Typescript
+        autocmd FileType typescript set tabstop=2 shiftwidth=2 expandtab ai
 
-        " => Vim 
+        " tsconfig.json is actually jsonc, help TypeScript set the correct filetype
+        autocmd BufRead,BufNewFile tsconfig.json set filetype=jsonc
+
+        " => Vim
         autocmd FileType vim set tabstop=2 shiftwidth=2 expandtab ai
 
-        " => Shell 
+        " => Shell
         autocmd FileType sh set tabstop=2 shiftwidth=2 expandtab ai
         autocmd BufRead *.bats setlocal filetype=sh
 
@@ -653,7 +662,7 @@ set nocompatible
 
         let g:test#custom_strategies = {'termOpen': function('TermStrategy'), 'jsMochaTestServer': function('strategy#JavascriptMochaStratey')}
         let g:test#strategy = 'termOpen'
-        let g:test#javascript#mocha#strategy = 'jsMochaTestServer'
+        "let g:test#javascript#mocha#strategy = 'jsMochaTestServer'
 
 
 " => LeaderF --------------------------------------------------------------
@@ -682,8 +691,8 @@ set nocompatible
         noremap <silent><Space>ff :<C-U><C-R>=printf("Leaderf function %s", "")<CR><CR>
         noremap <silent><Space>fr :<C-U><C-R>=printf("Leaderf mru %s", "")<CR><CR>
         "noremap <silent><C-M> :<C-U><C-R>=printf("Leaderf mru %s", "")<CR><CR>
-        noremap <leader>ft :<C-U><C-R>=printf("Leaderf bufTag %s", "")<CR><CR>
-        noremap <leader>fl :<C-U><C-R>=printf("Leaderf line %s", "")<CR><CR>
+        "noremap <leader>ft :<C-U><C-R>=printf("Leaderf bufTag %s", "")<CR><CR>
+        "noremap <leader>fl :<C-U><C-R>=printf("Leaderf line %s", "")<CR><CR>
 
         "noremap <C-B> :<C-U><C-R>=printf("Leaderf! rg --current-buffer -e %s ", expand("<cword>"))<CR>
         "noremap <C-F> :<C-U><C-R>=printf("Leaderf! rg -e %s ", expand("<cword>"))<CR>
