@@ -1,0 +1,183 @@
+set runtimepath^=~/.vim runtimepath+=~/.vim/after
+let &packpath = &runtimepath
+
+set nocompatible
+
+
+" => Auto Install vim-plug --------------------------------------------------------------------------------
+        if empty(glob('~/.vim/autoload/plug.vim'))
+          silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+            \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+          autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+        endif
+
+" => Plugin ---------------------------------------------------------------
+        call plug#begin('~/.vim/plugged')
+
+
+        Plug 'rakr/vim-one'
+        Plug 'joshdick/onedark.vim'
+        "Plug 'kaicataldo/material.vim', { 'branch': 'main' }
+        "Plug 'Xuyuanp/nerdtree-git-plugin'
+        "Plug 'pangloss/vim-javascript'
+        "Plug 'MaxMEllon/vim-jsx-pretty'
+        "Plug 'leafgarland/typescript-vim'
+        "Plug 'HerringtonDarkholme/yats.vim'
+        "Plug 'peitalin/vim-jsx-typescript'
+        "Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
+        "Plug 'Yggdroot/LeaderF', { 'do': './install.sh' }
+        "Plug 'neoclide/coc.nvim', {'branch': 'release'}
+        let g:coc_global_extensions = ['coc-vimlsp', 'coc-java', 'coc-snippets', 'coc-phpactor', 'coc-css', 'coc-html', 'coc-json', 'coc-tsserver', 'coc-phpls']
+        Plug 'preservim/nerdtree'
+        "Plug 'mg979/vim-visual-multi', {'branch': 'master'}
+        Plug 'itchyny/lightline.vim'
+        "Plug 'ryanoasis/vim-devicons'
+        Plug 'arzg/vim-colors-xcode'
+
+        " => Language disabled syntax ------------------
+        "let g:polyglot_disabled = ['php', 'javascript']
+        Plug 'sheerun/vim-polyglot'
+
+        call plug#end()
+
+" => Indent ---------------------------------------------------------------
+        set tabstop=4
+        set expandtab
+        set softtabstop=4
+        set shiftwidth=4
+        set autoindent
+        set laststatus=2
+
+" => Other ------------------------------------
+        set belloff=all
+        set encoding=utf-8
+        set clipboard+=unnamed
+        set nowrap
+        set lazyredraw
+
+" => NERDTree ---------------------------------------------------------------
+    map <silent><Space>ft :NERDTreeToggle<CR>
+    map <silent><Space>fv :NERDTreeFind<CR>
+
+
+    " => Keymap ---------------------------------------------------------------
+        syntax on
+        filetype plugin on
+        set mouse=a
+        set nu
+        "set rnu
+        nmap <silent><space>wm :tabnew %<cr>
+        nmap <silent><Space>fs :w<cr>
+        nmap <silent><Space>fS :wa<cr>
+        nmap <silent><Space>jn i<cr><Esc>
+        nmap <silent><Space>jo i<cr><Esc>k$
+        nmap <silent>sv :vsp<cr>
+        nmap <silent>sg :sp<cr>
+        nmap <silent>sq :q<cr>
+        nmap <silent>sQ :qa<cr>
+        nmap <silent>U <c-r>
+        nmap <silent><c-h> <c-w>h
+        nmap <silent><c-j> <c-w>j
+        nmap <silent><c-k> <c-w>k
+        nmap <silent><c-l> <c-w>l
+        nmap <silent><Leader>sa ggVG
+        nmap <silent><Leader><Space> :nohl<cr>
+        nmap <silent><Space><cr> o<Esc>
+        nmap <silent><Space>bf :Format<cr>
+        set clipboard=unnamed
+        set nowrap
+        set ignorecase
+        set smartcase
+        set splitbelow
+        set splitright
+        set ruler
+        set incsearch
+        set hlsearch
+
+
+        "set background=dark " for the dark version
+        set background=light " for the light version
+        "colorscheme typewriter-night
+        "colorscheme onedark
+        "colorscheme xcodewwdc
+        colorscheme one
+
+    " => Lightline --------------------------------
+        let g:lightline = {
+              \ 'colorscheme': 'solarized',
+              \ 'active': {
+              \   'left': [ [ 'mode', 'paste' ],
+              \             [ 'window', 'filename', 'modified'] ]
+              \ },
+              \ 'inactive': {
+              \   'left': [ [ 'mode', 'paste' ],
+              \             [ 'window'] ]
+              \ },
+              \ 'component_function': {
+              \   'window': 'WindowNum'
+              \ },
+              \ }
+
+
+        "let g:material_terminal_italics = 1
+        "let g:material_theme_style = 'lighter'
+        "colorscheme material
+
+        "colorscheme xcodelight
+        nmap <Leader>ev :e ~/.vim/.vimrc<cr>
+        nmap <Leader>te :b term<cr>
+        map Y y$
+        "highlight LineNr ctermfg=grey guifg=grey
+        "highlight CursorLineNr ctermfg=red guifg=red
+
+" => Guioptions -----------------------------------------------------------
+        set guioptions-=l
+        set guioptions-=L
+        set guioptions-=r
+        set guioptions-=R
+        set guioptions-=e
+        set foldcolumn=0
+        "hi foldcolumn guibg=bg
+        "hi LineNr guibg=bg
+        "set fillchars+=vert:\!
+        "hi vertsplit cterm=none term=none guibg=bg
+        " hi statusline guibg=DarkGray guifg=Green
+        " hi statuslineNC guibg=Green
+
+" => Autocmd ----------------------------------------------------------------
+        "autocmd BufRead .vimrc setlocal filetype=vim rnu
+        autocmd FileType php setlocal omnifunc=phpactor#Complete
+        "autocmd BufWritePost .vimrc source $MYVIMRC
+
+        " => AutoIndent -------------------------------------------------------------
+        filetype indent on
+        " => Javascript
+        autocmd FileType javascript set tabstop=2 shiftwidth=2 expandtab ai
+        " set filetypes as typescriptreact
+        "autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescriptreact
+        " => Typescript
+        autocmd FileType typescriptreact,typescript set tabstop=2 shiftwidth=2 expandtab ai
+
+        " tsconfig.json is actually jsonc, help TypeScript set the correct filetype
+        autocmd BufRead,BufNewFile tsconfig.json set filetype=jsonc
+
+        " => Vim
+        autocmd FileType vim set tabstop=2 shiftwidth=2 expandtab ai
+
+        " => Shell
+        autocmd FileType sh set tabstop=2 shiftwidth=2 expandtab ai
+        autocmd BufRead *.bats setlocal filetype=sh
+
+        " => json
+        autocmd FileType json set tabstop=2 shiftwidth=2 expandtab ai
+
+        " => Html 
+        autocmd FileType html set tabstop=4 shiftwidth=4 expandtab ai
+
+        " => Php 
+        autocmd FileType php set tabstop=4 shiftwidth=4 expandtab ai
+        autocmd FileType blade set tabstop=4 shiftwidth=4 expandtab ai
+
+        " => Vue
+        autocmd FileType vue set tabstop=2 shiftwidth=2 expandtab ai
+
