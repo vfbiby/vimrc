@@ -7,7 +7,6 @@ set nocompatible
 
 
 
-
 " => Macvim options  --------------------------------------------------------------------------------------
         if has("gui_macvim")
           "set guifont=DejaVuSansMono\ Nerd\ Font\ Mono:h12
@@ -43,12 +42,16 @@ set nocompatible
 " => Plugin ---------------------------------------------------------------
         call plug#begin('~/.vim/plugged_test')
 
+
+        Plug 'rakr/vim-one'
+        Plug 'junegunn/vim-easy-align'
+        Plug 'joshdick/onedark.vim'
+        Plug 'Xuyuanp/nerdtree-git-plugin'
         Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
         Plug 'AndrewRadev/dsf.vim'
         Plug 'AndrewRadev/tagalong.vim'
         Plug 'AndrewRadev/splitjoin.vim'
         Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-        "Plug 'michaeljsmith/vim-indent-object'
         Plug 'leoatchina/vim-object'
         Plug 'vim-scripts/ReplaceWithRegister'
         Plug 'mattn/calendar-vim'
@@ -78,22 +81,19 @@ set nocompatible
         Plug 'tpope/vim-surround'
         Plug 'mg979/vim-visual-multi', {'branch': 'master'}
         Plug 'itchyny/lightline.vim'
-        Plug 'MaxMEllon/vim-jsx-pretty'
-        Plug 'joshdick/onedark.vim'
-        Plug 'pangloss/vim-javascript'
         Plug 'ryanoasis/vim-devicons'
         Plug 'jiangmiao/auto-pairs'    
-        "Plug 'terryma/vim-expand-region'
         Plug 'arzg/vim-colors-xcode'
         Plug 'preservim/nerdcommenter'
         Plug 'Asheq/close-buffers.vim'
         Plug 'mikehaertl/pdv-standalone'
         Plug 'ryanoasis/vim-devicons'
         Plug 'mhinz/vim-startify'
-        Plug 'terryma/vim-expand-region'
+        "Plug 'terryma/vim-expand-region'
         Plug 'justinmk/vim-sneak'
         Plug 'prettier/vim-prettier', {'do': 'yarn install'}
         Plug 'Sirver/ultisnips'
+        Plug 'mlaursen/vim-react-snippets'
         Plug 'honza/vim-snippets'
         Plug 'tpope/vim-fugitive'
         Plug 'skwp/greplace.vim'
@@ -111,10 +111,24 @@ set nocompatible
 
 
         " => Language disabled syntax ------------------
-        let g:polyglot_disabled = ['php', 'javascript']
+        "syntax for all
+        "let g:polyglot_disabled = ['php', 'javascript']
         Plug 'sheerun/vim-polyglot'
 
+        "Plug 'pangloss/vim-javascript'
+        "Plug 'MaxMEllon/vim-jsx-pretty'
+        "Plug 'leafgarland/typescript-vim'
+        "Plug 'HerringtonDarkholme/yats.vim'
+        "Plug 'peitalin/vim-jsx-typescript'
+
         call plug#end()
+" => easy-align ------------------------------------------------------------------------------------------
+        " Start interactive EasyAlign in visual mode (e.g. vipga)
+        xmap ga <Plug>(EasyAlign)
+
+        " Start interactive EasyAlign for a motion/text object (e.g. gaip)
+        nmap ga <Plug>(EasyAlign)
+
 " => tagalong --------------------------------------------------------------------------------------------
         let g:tagalong_additional_filetypes = ['blade']
 
@@ -248,7 +262,7 @@ set nocompatible
 
     " => Lightline --------------------------------
         let g:lightline = {
-              \ 'colorscheme': 'powerline',
+              \ 'colorscheme': 'solarized',
               \ 'active': {
               \   'left': [ [ 'mode', 'paste' ],
               \             [ 'window', 'filename', 'modified'] ]
@@ -289,8 +303,8 @@ set nocompatible
         let g:grep_cmd_opts = '--line-numbers --noheading'
 
 " => Vim-Prettier ----------------------------------------------------------------------------------------
-        let g:prettier#exec_cmd_async = 1
-        autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html,*.php PrettierAsync
+        "let g:prettier#exec_cmd_async = 0
+        "autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html,*.php PrettierAsync
 
 " => Terminal --------------------------------------------------------------------------------------------
         " turn terminal to normal mode with escape
@@ -505,7 +519,7 @@ set nocompatible
         filetype plugin on
         set mouse=a
         set nu
-        set rnu
+        "set rnu
         nmap <silent><space>wm :tabnew %<cr>
         nmap <silent><Space>fs :w<cr>
         nmap <silent><Space>fS :wa<cr>
@@ -534,8 +548,8 @@ set nocompatible
         set incsearch
         set hlsearch
         "colorscheme typewriter-night
-        colorscheme onedark
-        "colorscheme xcodewwdc
+        "colorscheme onedark
+        colorscheme xcodewwdc
         "colorscheme xcodelight
         nmap <Leader>ev :e ~/.vim/.vimrc<cr>
         nmap <Leader>te :b term<cr>
@@ -567,7 +581,9 @@ set nocompatible
         " => Javascript
         autocmd FileType javascript set tabstop=2 shiftwidth=2 expandtab ai
         " => Typescript
-        autocmd FileType typescript set tabstop=2 shiftwidth=2 expandtab ai
+        autocmd FileType typescriptreact,typescript set tabstop=2 shiftwidth=2 expandtab ai
+        " set filetypes as typescriptreact
+        autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescriptreact
 
         " tsconfig.json is actually jsonc, help TypeScript set the correct filetype
         autocmd BufRead,BufNewFile tsconfig.json set filetype=jsonc
