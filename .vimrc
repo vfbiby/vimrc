@@ -87,7 +87,6 @@ set nocompatible
         Plug 'preservim/nerdcommenter'
         Plug 'Asheq/close-buffers.vim'
         Plug 'mikehaertl/pdv-standalone'
-        Plug 'ryanoasis/vim-devicons'
         Plug 'mhinz/vim-startify'
         "Plug 'terryma/vim-expand-region'
         Plug 'justinmk/vim-sneak'
@@ -537,7 +536,7 @@ set nocompatible
         nmap <silent><Leader>sa ggVG
         nmap <silent><Leader><Space> :nohl<cr>
         nmap <silent><Space><cr> o<Esc>
-        nmap <silent><Space>bf :Format<cr>
+        nmap <silent><Space>bf :Prettier<cr>
         set clipboard=unnamed
         set nowrap
         set ignorecase
@@ -550,6 +549,7 @@ set nocompatible
         "colorscheme typewriter-night
         "colorscheme onedark
         colorscheme xcodewwdc
+        "colorscheme one
         "colorscheme xcodelight
         nmap <Leader>ev :e ~/.vim/.vimrc<cr>
         nmap <Leader>te :b term<cr>
