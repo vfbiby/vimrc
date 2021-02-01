@@ -2,7 +2,7 @@ set runtimepath^=~/.vim runtimepath+=~/.vim/after
 let &packpath = &runtimepath
 
 set nocompatible
-
+let g:AutoPairsFlyMode = 1
 
 " => Auto Install vim-plug --------------------------------------------------------------------------------
         if empty(glob('~/.vim/autoload/plug.vim'))
@@ -15,27 +15,62 @@ set nocompatible
         call plug#begin('~/.vim/plugged')
 
 
+        "Plug 'junegunn/vim-easy-align'
+        "Plug 'Xuyuanp/nerdtree-git-plugin'
+        "Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
+        "Plug 'AndrewRadev/dsf.vim'
+        "Plug 'AndrewRadev/tagalong.vim'
+        "Plug 'AndrewRadev/splitjoin.vim'
+        "Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+        "Plug 'leoatchina/vim-object'
+        "Plug 'vim-scripts/ReplaceWithRegister'
+        "Plug 'mattn/calendar-vim'
+        "Plug 'uguu-org/vim-matrix-screensaver'
+        "Plug 'tommcdo/vim-exchange'
+        "Plug 'mcchrish/nnn.vim'
+        "Plug 'mattn/emmet-vim'
+        "Plug 'liuchengxu/vista.vim'
+        "Plug 'junegunn/gv.vim'
+        "Plug 'airblade/vim-gitgutter'
+        "Plug 'vfbiby/thunder-js-tester-strategy'
+        "Plug 'bronson/vim-visual-star-search'
+        "Plug 'phpactor/phpactor', {'for': 'php', 'branch': 'master', 'do': 'composer install --no-dev -o'}
+        Plug 'Yggdroot/LeaderF', { 'do': './install.sh' }
+        Plug 'neoclide/coc.nvim', {'branch': 'release'}
+        "Pet g:coc_global_extensions = ['coc-vimlsp', 'coc-java', 'coc-snippets', 'coc-phpactor', 'coc-css', 'coc-html', 'coc-json', 'coc-tsserver', 'coc-phpls']
+        "Plug 'mileszs/ack.vim'
+        "Plug 'rking/ag.vim'
+        "Plug 'Chun-Yang/vim-action-ag'
+        "Plug 'vfbiby/thunder-js-tester-vim-test'
+        "Plug 'tpope/vim-surround'
+        "Plug 'mg979/vim-visual-multi', {'branch': 'master'}
+        "Plug 'itchyny/lightline.vim'
+        "Plug 'ryanoasis/vim-devicons'
+        Plug 'jiangmiao/auto-pairs'    
+        "Plug 'preservim/nerdcommenter'
+        "Plug 'Asheq/close-buffers.vim'
+        "Plug 'mikehaertl/pdv-standalone'
+        "Plug 'mhinz/vim-startify'
+        "Plug 'justinmk/vim-sneak'
+        "Plug 'prettier/vim-prettier', {'do': 'yarn install'}
+        "Plug 'Sirver/ultisnips'
+        "Plug 'mlaursen/vim-react-snippets'
+        "Plug 'honza/vim-snippets'
+        "Plug 'tpope/vim-fugitive'
+        "Plug 'skwp/greplace.vim'
+        "Plug 'vim-player/terminal.vim'
+        "Plug 'kana/vim-textobj-user'
+        "Plug 'kana/vim-textobj-function'
+        "Plug 'thinca/vim-textobj-function-javascript'
+
+
+
         Plug 'rakr/vim-one'
         Plug 'joshdick/onedark.vim'
-        "Plug 'kaicataldo/material.vim', { 'branch': 'main' }
-        "Plug 'Xuyuanp/nerdtree-git-plugin'
-        "Plug 'pangloss/vim-javascript'
-        "Plug 'MaxMEllon/vim-jsx-pretty'
-        "Plug 'leafgarland/typescript-vim'
-        "Plug 'HerringtonDarkholme/yats.vim'
-        "Plug 'peitalin/vim-jsx-typescript'
-        "Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
-        "Plug 'Yggdroot/LeaderF', { 'do': './install.sh' }
-        "Plug 'neoclide/coc.nvim', {'branch': 'release'}
         let g:coc_global_extensions = ['coc-vimlsp', 'coc-java', 'coc-snippets', 'coc-phpactor', 'coc-css', 'coc-html', 'coc-json', 'coc-tsserver', 'coc-phpls']
         Plug 'preservim/nerdtree'
-        "Plug 'mg979/vim-visual-multi', {'branch': 'master'}
         Plug 'itchyny/lightline.vim'
-        "Plug 'ryanoasis/vim-devicons'
         Plug 'arzg/vim-colors-xcode'
-
-        " => Language disabled syntax ------------------
-        "let g:polyglot_disabled = ['php', 'javascript']
         Plug 'sheerun/vim-polyglot'
 
         call plug#end()
@@ -95,12 +130,12 @@ set nocompatible
         set hlsearch
 
 
-        "set background=dark " for the dark version
-        set background=light " for the light version
-        "colorscheme typewriter-night
-        "colorscheme onedark
-        "colorscheme xcodewwdc
-        colorscheme one
+        ""set background=dark " for the dark version
+        "set background=light " for the light version
+        ""colorscheme typewriter-night
+        ""colorscheme onedark
+        ""colorscheme xcodewwdc
+        "colorscheme one
 
     " => Lightline --------------------------------
         let g:lightline = {
