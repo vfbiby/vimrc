@@ -536,12 +536,15 @@ set nocompatible
         set guioptions-=R
         set guioptions-=e
         set foldcolumn=0
-        "hi foldcolumn guibg=bg
-        "hi LineNr guibg=bg
-        "set fillchars+=vert:\!
+        "set fillchars+=vert:│
+        "set fillchars=stl:^,stlnc:=,vert:│,fold:·,diff:-
         "hi vertsplit cterm=none term=none guibg=bg
-        " hi statusline guibg=DarkGray guifg=Green
-        " hi statuslineNC guibg=Green
+        "hi LineNr guibg=bg
+        "set foldcolumn=2
+        "hi foldcolumn guibg=bg
+        "hi VertSplit guibg=bg guifg=bg
+        set fillchars+=eob:\ 
+        call one#highlight('VertSplit', '', 'bg', 'none')
 
 " => Autocmd ----------------------------------------------------------------
         "autocmd BufRead .vimrc setlocal filetype=vim rnu
