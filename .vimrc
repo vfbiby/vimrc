@@ -582,9 +582,10 @@ set nocompatible
         "hi foldcolumn guibg=bg
         "hi LineNr guibg=bg
         "set fillchars+=vert:\!
-        "hi vertsplit cterm=none term=none guibg=bg
+        hi vertsplit cterm=none term=none guibg=bg
         " hi statusline guibg=DarkGray guifg=Green
         " hi statuslineNC guibg=Green
+
 
 " => Autocmd ----------------------------------------------------------------
         "autocmd BufRead .vimrc setlocal filetype=vim rnu
