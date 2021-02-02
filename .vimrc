@@ -47,7 +47,7 @@ set nocompatible
         Plug 'junegunn/vim-easy-align'
         Plug 'joshdick/onedark.vim'
         Plug 'Xuyuanp/nerdtree-git-plugin'
-        Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
+        "Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
         Plug 'AndrewRadev/dsf.vim'
         Plug 'AndrewRadev/tagalong.vim'
         Plug 'AndrewRadev/splitjoin.vim'
