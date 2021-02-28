@@ -58,6 +58,7 @@ set nocompatible
         call plug#begin('~/.vim/plugged_test')
 
 
+        Plug 'CodeFalling/fcitx-vim-osx'
         Plug 'rakr/vim-one'
         Plug 'junegunn/vim-easy-align'
         Plug 'joshdick/onedark.vim'
@@ -66,7 +67,7 @@ set nocompatible
         Plug 'AndrewRadev/dsf.vim'
         Plug 'AndrewRadev/tagalong.vim'
         Plug 'AndrewRadev/splitjoin.vim'
-        Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+        "Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
         Plug 'leoatchina/vim-object'
         Plug 'vim-scripts/ReplaceWithRegister'
         Plug 'mattn/calendar-vim'
@@ -262,6 +263,12 @@ set nocompatible
             autocmd TabLeave * call s:tableave()
             autocmd TabNew * call timer_start(10, function('s:tabenter'))
         augroup END
+
+    " => fast back --------------------------------
+    nnoremap <expr> h (v:count > 1 ? "m'" . v:count : '') . 'h'
+    nnoremap <expr> j (v:count > 1 ? "m'" . v:count : '') . 'j'
+    nnoremap <expr> k (v:count > 1 ? "m'" . v:count : '') . 'k'
+    nnoremap <expr> l (v:count > 1 ? "m'" . v:count : '') . 'l'
 
     " => Window switch ----------------------------
         nmap <silent><Space>1 :1wincmd w<CR>
@@ -533,7 +540,7 @@ set nocompatible
         filetype plugin on
         set mouse=a
         set nu
-        "set rnu
+        set rnu
         nmap <silent><space>wm :tabnew %<cr>
         nmap <silent><Space>fs :w<cr>
         nmap <silent><Space>fS :wa<cr>
@@ -562,8 +569,8 @@ set nocompatible
         set incsearch
         set hlsearch
         "colorscheme typewriter-night
-        "colorscheme onedark
-        colorscheme xcodewwdc
+        colorscheme onedark
+        "colorscheme xcodewwdc
         "colorscheme one
         "colorscheme xcodelight
         nmap <Leader>ev :e ~/.vim/.vimrc<cr>
@@ -864,8 +871,8 @@ set nocompatible
         augroup end
 
         " Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
-        xmap <leader>a  <Plug>(coc-codeaction-selected)
-        nmap <leader>a  <Plug>(coc-codeaction-selected)
+        xmap <leader>as  <Plug>(coc-codeaction-selected)
+        nmap <leader>as  <Plug>(coc-codeaction-selected)
 
         " Remap for do codeAction of current line
         nmap <leader>ac  <Plug>(coc-codeaction)
