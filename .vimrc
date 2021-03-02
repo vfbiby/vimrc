@@ -57,8 +57,7 @@ set nocompatible
 " => Plugin ---------------------------------------------------------------
         call plug#begin('~/.vim/plugged_test')
 
-
-        Plug 'CodeFalling/fcitx-vim-osx'
+        "Plug 'CodeFalling/fcitx-vim-osx'
         Plug 'rakr/vim-one'
         Plug 'junegunn/vim-easy-align'
         Plug 'joshdick/onedark.vim'
@@ -589,6 +588,7 @@ set nocompatible
         "hi foldcolumn guibg=bg
         "hi LineNr guibg=bg
         "set fillchars+=vert:\!
+        set fillchars+=eob:\ 
         hi vertsplit cterm=none term=none guibg=bg
         " hi statusline guibg=DarkGray guifg=Green
         " hi statuslineNC guibg=Green
