@@ -57,6 +57,7 @@ set nocompatible
 " => Plugin ---------------------------------------------------------------
         call plug#begin('~/.vim/plugged_test')
 
+        Plug 'ollykel/v-vim'
         "Plug 'CodeFalling/fcitx-vim-osx'
         Plug 'rakr/vim-one'
         Plug 'junegunn/vim-easy-align'
@@ -656,7 +657,7 @@ set nocompatible
     map <silent><Space>fv :NERDTreeFind<CR>
 
 " => Vim-test ---------------------------------------------------------------
-        let g:test#javascript#runner = 'mocha'
+        "let g:test#javascript#runner = 'mocha'
         "let test#javascript#mocha#strategy = 'mocha'
 
         "Test nearest
@@ -672,7 +673,7 @@ set nocompatible
 
         "let test#enabled_runners = ["javascript#mocha"]
         "let g:test#javascript#mocha#file_pattern = '.*\.spec\.js'
-        let g:test#javascript#mocha#file_pattern = '\v(tests?/.*|(test)|(spec))\.(js|jsx|coffee)$'
+        let g:test#javascript#mocha#file_pattern = '\v(tests?/.*|(test)|(spec))\.(js|jsx|coffee|ts|tsx)$'
         "let test#vimscript#runner = 'testify'
         "let g:test#php#patterns = {'test': ['\v^\s*public function ([^ ]*)\('], 'namespace': []}
         let g:test#php#patterns = {'test': ['\v^\s*public function ([0-9A-Za-z_\u4e00-\u9fa5]*)\('], 'namespace': []}
@@ -701,7 +702,7 @@ set nocompatible
 
         let g:test#custom_strategies = {'termOpen': function('TermStrategy'), 'jsMochaTestServer': function('strategy#JavascriptMochaStratey')}
         let g:test#strategy = 'termOpen'
-        "let g:test#javascript#mocha#strategy = 'jsMochaTestServer'
+        let g:test#javascript#mocha#strategy = 'jsMochaTestServer'
 
 
 " => LeaderF --------------------------------------------------------------
