@@ -653,8 +653,11 @@ set nocompatible
         "let g:coc_snippet_next = '<tab>'
 
 " => NERDTree ---------------------------------------------------------------
-    map <silent><Space>ft :NERDTreeToggle<CR>
+    map <silent><Space>ft :CocCommand explorer<CR>
+    map <silent><Space>fb :CocCommand ftree.open<CR>
+    "map <silent><Space>ft :NERDTreeToggle<CR>
     map <silent><Space>fv :NERDTreeFind<CR>
+    "nnoremap <Leader>fv :call CocAction('runCommand', 'explorer.doAction', 'closest', ['reveal:0'], [['relative', 0, 'file']])<CR>
 
 " => Vim-test ---------------------------------------------------------------
         "let g:test#javascript#runner = 'mocha'
@@ -702,7 +705,7 @@ set nocompatible
 
         let g:test#custom_strategies = {'termOpen': function('TermStrategy'), 'jsMochaTestServer': function('strategy#JavascriptMochaStratey')}
         let g:test#strategy = 'termOpen'
-        let g:test#javascript#mocha#strategy = 'jsMochaTestServer'
+        "let g:test#javascript#mocha#strategy = 'jsMochaTestServer'
 
 
 " => LeaderF --------------------------------------------------------------
@@ -725,10 +728,10 @@ set nocompatible
 
         let g:Lf_UseCache = 0
         let g:Lf_UseMemoryCache = 0
-        let g:Lf_ShortcutF = "<Space>pf"
-        nmap <c-p> <Space>pf
+        let g:Lf_ShortcutF = "<Space>ff"
+        nmap <c-p> <Space>ff
         noremap <silent><Space>bb :<C-U><C-R>=printf("Leaderf buffer %s", "")<CR><CR>
-        noremap <silent><Space>ff :<C-U><C-R>=printf("Leaderf function %s", "")<CR><CR>
+        "noremap <silent><Space>ff :<C-U><C-R>=printf("Leaderf function %s", "")<CR><CR>
         noremap <silent><Space>fr :<C-U><C-R>=printf("Leaderf mru %s", "")<CR><CR>
         "noremap <silent><C-M> :<C-U><C-R>=printf("Leaderf mru %s", "")<CR><CR>
         "noremap <leader>ft :<C-U><C-R>=printf("Leaderf bufTag %s", "")<CR><CR>
