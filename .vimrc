@@ -656,8 +656,8 @@ set nocompatible
     map <silent><Space>ft :CocCommand explorer<CR>
     map <silent><Space>fb :CocCommand ftree.open<CR>
     "map <silent><Space>ft :NERDTreeToggle<CR>
-    map <silent><Space>fv :NERDTreeFind<CR>
-    "nnoremap <Leader>fv :call CocAction('runCommand', 'explorer.doAction', 'closest', ['reveal:0'], [['relative', 0, 'file']])<CR>
+    "map <silent><Space>fv :NERDTreeFind<CR>
+    nnoremap <silent><Space>fv :call CocAction('runCommand', 'explorer.doAction', 'closest', ['reveal:0'], [['relative', 0, 'file']])<CR>
 
 " => Vim-test ---------------------------------------------------------------
         "let g:test#javascript#runner = 'mocha'
