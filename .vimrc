@@ -78,7 +78,6 @@ set nocompatible
         Plug 'liuchengxu/vista.vim'
         Plug 'junegunn/gv.vim'
         Plug 'airblade/vim-gitgutter'
-        Plug 'vfbiby/thunder-js-tester-strategy'
         Plug 'bronson/vim-visual-star-search'
         "Plug 'nelstrom/vim-textobj-rubyblock'
         "Plug 'xklalala/mh-vim-for-mocha-test-client'
@@ -92,7 +91,10 @@ set nocompatible
         Plug 'Chun-Yang/vim-action-ag'
         "Plug 'janko/vim-test'
         
-        Plug 'vfbiby/thunder-js-tester-vim-test'
+
+        Plug 'codingstyle-cn/vim-test'
+        Plug 'vfbiby/thunder-js-tester-strategy'
+        "Plug 'vfbiby/thunder-js-tester-vim-test'
         Plug 'preservim/nerdtree'
         Plug 'tpope/vim-surround'
         Plug 'mg979/vim-visual-multi', {'branch': 'master'}
@@ -137,6 +139,66 @@ set nocompatible
         "Plug 'peitalin/vim-jsx-typescript'
 
         call plug#end()
+
+        let g:coc_explorer_global_presets = {
+                                \   '.vim': {
+                                \     'root-uri': '~/.vim',
+                                \   },
+                                \   'cocConfig': {
+                                \      'root-uri': '~/.config/coc',
+                                \   },
+                                \   'tab': {
+                                \     'position': 'tab',
+                                \     'quit-on-open': v:true,
+                                \   },
+                                \   'tab:$': {
+                                \     'position': 'tab:$',
+                                \     'quit-on-open': v:true,
+                                \   },
+                                \   'floating': {
+                                \     'position': 'floating',
+                                \     'open-action-strategy': 'sourceWindow',
+                                \   },
+                                \   'floatingTop': {
+                                \     'position': 'floating',
+                                \     'floating-position': 'center-top',
+                                \     'open-action-strategy': 'sourceWindow',
+                                \   },
+                                \   'floatingLeftside': {
+                                \     'position': 'floating',
+                                \     'floating-position': 'left-center',
+                                \     'floating-width': 50,
+                                \     'open-action-strategy': 'sourceWindow',
+                                \   },
+                                \   'floatingRightside': {
+                                \     'position': 'floating',
+                                \     'floating-position': 'right-center',
+                                \     'floating-width': 50,
+                                \     'open-action-strategy': 'sourceWindow',
+                                \   },
+                                \   'simplify': {
+                                \     'file-child-template': '[selection | clip | 1] [indent][icon | 1] [filename omitCenter 1]'
+                                \   },
+                                \   'buffer': {
+                                \     'sources': [{'name': 'buffer', 'expand': v:true}]
+                                \   },
+                                \ }
+
+        " Use preset argument to open it
+        nnoremap <silent><space>ed :CocCommand explorer --preset .vim<CR>
+        nnoremap <silent><space>ef :CocCommand explorer --preset floating<CR>
+        nnoremap <silent><space>ec :CocCommand explorer --preset cocConfig<CR>
+        nnoremap <silent><space>eb :CocCommand explorer --preset buffer<CR>
+
+        " List all presets
+        nnoremap <silent><space>el :CocList explPresets<CR>
+
+" => nnn -------------------------------------------------------------------------------------------------
+        let g:nnn#layout = { 'window': { 'width': 0.9, 'height': 0.6, 'highlight': 'Debug' } }
+        let g:nnn#action = {
+                                \ '<c-t>': 'tab split',
+                                \ '<c-x>': 'split',
+                                \ '<c-v>': 'vsplit' }
 " => easy-align ------------------------------------------------------------------------------------------
         " Start interactive EasyAlign in visual mode (e.g. vipga)
         xmap ga <Plug>(EasyAlign)
