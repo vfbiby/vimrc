@@ -140,6 +140,9 @@ set nocompatible
 
         call plug#end()
 
+        "map <C-K> :pyf /usr/local/opt/llvm@11/Toolchains/LLVM11.1.0.xctoolchain/usr/share/clang/clang-format.py<cr>
+        "imap <C-K> <c-o>:pyf /usr/local/opt/llvm@11/Toolchains/LLVM11.1.0.xctoolchain/usr/share/clang/clang-format.py<cr>
+
         let g:coc_explorer_global_presets = {
                                 \   '.vim': {
                                 \     'root-uri': '~/.vim',
@@ -603,7 +606,9 @@ set nocompatible
         set mouse=a
         set nu
         set rnu
-        nmap <silent><space>wm :tabnew %<cr>
+        nmap <silent><space>wm <c-w>\|
+        nmap <silent><space>we <c-w>=
+        nmap <silent><space>wt :tabnew %<cr>
         nmap <silent><Space>fs :w<cr>
         nmap <silent><Space>fS :wa<cr>
         nmap <silent><Space>jn i<cr><Esc>
