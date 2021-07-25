@@ -5,23 +5,6 @@ let &packpath = &runtimepath
 set nocompatible
 "let mapleader=","
 
-" => True Color ------------------------------------------------------------------------------------------
-        if (has("nvim"))
-          "For Neovim 0.1.3 and 0.1.4 < https://github.com/neovim/neovim/pull/2198 >
-          let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-        endif
-        "For Neovim > 0.1.5 and Vim > patch 7.4.1799 < https://github.com/vim/vim/commit/61be73bb0f965a895bfb064ea3e55476ac175162 >
-        "Based on Vim patch 7.4.1770 (`guicolors` option) < https://github.com/vim/vim/commit/8a633e3427b47286869aa4b96f2bfc1fe65b25cd >
-        " < https://github.com/neovim/neovim/wiki/Following-HEAD#20160511 >
-        if (has("termguicolors"))
-          set termguicolors
-        endif
-
-        "For Vim inside tmux, you can add the following snippet in your ~/.vimrc
-        set t_8b=^[[48;2;%lu;%lu;%lum
-        set t_8f=^[[38;2;%lu;%lu;%lum
-
-
 " => Macvim options  --------------------------------------------------------------------------------------
         if has("gui_macvim")
           "set guifont=DejaVuSansMono\ Nerd\ Font\ Mono:h12
@@ -55,8 +38,10 @@ set nocompatible
         endif
 
 " => Plugin ---------------------------------------------------------------
-        call plug#begin('~/.vim/plugged_test')
+        call plug#begin('~/.vim/plugged')
 
+        "Plug 'puremourning/vimspector'
+        Plug 'alepez/vim-gtest'
         Plug 'ollykel/v-vim'
         "Plug 'CodeFalling/fcitx-vim-osx'
         Plug 'rakr/vim-one'
@@ -89,10 +74,10 @@ set nocompatible
         Plug 'mileszs/ack.vim'
         Plug 'rking/ag.vim'
         Plug 'Chun-Yang/vim-action-ag'
-        "Plug 'janko/vim-test'
+        Plug 'janko/vim-test'
         
 
-        Plug 'codingstyle-cn/vim-test'
+        "Plug 'codingstyle-cn/vim-test'
         Plug 'vfbiby/thunder-js-tester-strategy'
         "Plug 'vfbiby/thunder-js-tester-vim-test'
         Plug 'preservim/nerdtree'
@@ -143,6 +128,30 @@ set nocompatible
         "map <C-K> :pyf /usr/local/opt/llvm@11/Toolchains/LLVM11.1.0.xctoolchain/usr/share/clang/clang-format.py<cr>
         "imap <C-K> <c-o>:pyf /usr/local/opt/llvm@11/Toolchains/LLVM11.1.0.xctoolchain/usr/share/clang/clang-format.py<cr>
 
+
+" => move lines ------------------------------------------------------------------------------------------
+        nnoremap <A-j> :m .+1<CR>==
+        nnoremap <A-k> :m .-2<CR>==
+        inoremap <A-j> <Esc>:m .+1<CR>==gi
+        inoremap <A-k> <Esc>:m .-2<CR>==gi
+        vnoremap <A-j> :m '>+1<CR>gv=gv
+        vnoremap <A-k> :m '<-2<CR>gv=gv
+
+" => gtest -----------------------------------------------------------------------------------------------
+        augroup GTest
+            autocmd FileType cpp nnoremap <silent> <leader>tt :GTestRun<CR>
+            autocmd FileType cpp nnoremap <silent> <leader>tu :GTestRunUnderCursor<CR>
+            autocmd FileType cpp nnoremap          <leader>tc :GTestCase<space>
+            autocmd FileType cpp nnoremap          <leader>tn :GTestName<space>
+            autocmd FileType cpp nnoremap <silent> <leader>te :GTestToggleEnabled<CR>
+            autocmd FileType cpp nnoremap <silent> ]T         :GTestNext<CR>
+            autocmd FileType cpp nnoremap <silent> [T         :GTestPrev<CR>
+            autocmd FileType cpp nnoremap <silent> <leader>tf :CtrlPGTest<CR>
+            autocmd FileType cpp nnoremap <silent> <leader>tj :GTestJump<CR>
+            autocmd FileType cpp nnoremap          <leader>ti :GTestNewTest<CR>i
+        augroup END
+
+" => coc-explorer ----------------------------------------------------------------------------------------
         let g:coc_explorer_global_presets = {
                                 \   '.vim': {
                                 \     'root-uri': '~/.vim',
@@ -348,7 +357,7 @@ set nocompatible
 
     " => Lightline --------------------------------
         let g:lightline = {
-              \ 'colorscheme': 'solarized',
+              \ 'colorscheme': 'one',
               \ 'active': {
               \   'left': [ [ 'mode', 'paste' ],
               \             [ 'window', 'filename', 'modified'] ]
@@ -625,7 +634,7 @@ set nocompatible
         nmap <silent><Leader>sa ggVG
         nmap <silent><Leader><Space> :nohl<cr>
         nmap <silent><Space><cr> o<Esc>
-        nmap <silent><Space>bf :Prettier<cr>
+        nmap <silent><Space>bf :PrettierAsync<cr>
         set clipboard=unnamed
         set nowrap
         set ignorecase
@@ -651,7 +660,7 @@ set nocompatible
         set guioptions-=L
         set guioptions-=r
         set guioptions-=R
-        set guioptions-=e
+        "set guioptions-=e
         set foldcolumn=0
         "hi foldcolumn guibg=bg
         "hi LineNr guibg=bg
@@ -729,17 +738,17 @@ set nocompatible
 " => Vim-test ---------------------------------------------------------------
         "let g:test#javascript#runner = 'mocha'
         "let test#javascript#mocha#strategy = 'mocha'
-
+        let &autowriteall = 1
         "Test nearest
-        nmap <silent> <Space>kn :call SaveModifiedFiles()<cr>:TestNearest<CR>
+        nmap <silent> <Space>kn :TestNearest<CR>
         "Test a file
-        nmap <silent> <Space>kf :call SaveModifiedFiles()<cr>:TestFile<CR>
+        nmap <silent> <Space>kf :TestFile<CR>
         "Test whole suite
-        nmap <silent> <Space>ks :call SaveModifiedFiles()<cr>:TestSuite<CR>
+        nmap <silent> <Space>ks :TestSuite<CR>
         "Test the last test
-        nmap <silent> <Space>kl :call SaveModifiedFiles()<cr>:TestLast<CR>
+        nmap <silent> <Space>kl :TestLast<CR>
         "Visit the last test
-        nmap <silent> <Space>kv :call SaveModifiedFiles()<cr>:TestVisit<CR>
+        nmap <silent> <Space>kv :TestVisit<CR>
 
         "let test#enabled_runners = ["javascript#mocha"]
         "let g:test#javascript#mocha#file_pattern = '.*\.spec\.js'
@@ -927,7 +936,7 @@ set nocompatible
         autocmd CursorHold * silent call CocActionAsync('highlight')
 
         " Remap for rename current word
-        nmap <leader>rn <Plug>(coc-rename)
+        nmap <Space>cr <Plug>(coc-rename)
 
         " Remap for format selected region
         "xmap <leader>f  <Plug>(coc-format-selected)
@@ -942,13 +951,13 @@ set nocompatible
         augroup end
 
         " Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
-        xmap <leader>as  <Plug>(coc-codeaction-selected)
-        nmap <leader>as  <Plug>(coc-codeaction-selected)
+        xmap <Space>as  <Plug>(coc-codeaction-selected)
+        nmap <Space>as  <Plug>(coc-codeaction-selected)
 
         " Remap for do codeAction of current line
-        nmap <leader>ac  <Plug>(coc-codeaction)
+        nmap <Space>ac  <Plug>(coc-codeaction)
         " Fix autofix problem of current line
-        nmap <leader>qf  <Plug>(coc-fix-current)
+        nmap <Space>cf  <Plug>(coc-fix-current)
 
         " Create mappings for function text object, requires document symbols feature of languageserver.
         xmap if <Plug>(coc-funcobj-i)
@@ -974,21 +983,21 @@ set nocompatible
 
         " Using CocList
         " Show all diagnostics
-        nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
+        nnoremap <silent> <space>ca  :<C-u>CocList diagnostics<cr>
         " Manage extensions
-        nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
+        nnoremap <silent> <space>ce  :<C-u>CocList extensions<cr>
         " Show commands
-        nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
+        nnoremap <silent> <space>cc  :<C-u>CocList commands<cr>
         " Find symbol of current document
-        nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
+        nnoremap <silent> <space>co  :<C-u>CocList outline<cr>
         " Search workspace symbols
-        nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
+        nnoremap <silent> <space>cs  :<C-u>CocList -I symbols<cr>
         " Do default action for next item.
-        nnoremap <silent> <space>j  :<C-u>CocNext<CR>
+        nnoremap <silent> <space>cj  :<C-u>CocNext<CR>
         " Do default action for previous item.
-        nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
+        nnoremap <silent> <space>ck  :<C-u>CocPrev<CR>
         " Resume latest coc list
-        nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
+        nnoremap <silent> <space>cp  :<C-u>CocListResume<CR>
 
         if filereadable(expand("$HOME/.vim/.my.vimrc"))    
             source ~/.vim/.my.vimrc
