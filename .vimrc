@@ -294,7 +294,7 @@ set nocompatible
               \  }
 
 " => Git -------------------------------------------------------------------------------------------------
-    nmap <silent><Space>gs :Gstatus<CR>
+    nmap <silent><Space>gs :Git<CR>
     nmap <silent><Space>gr :Gread<CR>
     nmap <silent><Space>gd :Gdiff<CR>
     nmap <silent><Space>gb :Gblame<CR>
