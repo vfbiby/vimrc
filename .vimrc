@@ -57,6 +57,14 @@ set nocompatible
 " => Plugin ---------------------------------------------------------------
         call plug#begin('~/.vim/plugged')
 
+        Plug 'google/vim-maktaba'
+        Plug 'google/vim-codefmt'
+        " Also add Glaive, which is used to configure codefmt's maktaba flags. See
+        " `:help :Glaive` for usage.
+        Plug 'google/vim-glaive'
+
+        Plug 'kristijanhusak/vim-hybrid-material'
+        "Plug 'w0ng/vim-hybrid'
         "Plug 'puremourning/vimspector'
         Plug 'alepez/vim-gtest'
         Plug 'ollykel/v-vim'
@@ -133,6 +141,7 @@ set nocompatible
         "syntax for all
         "let g:polyglot_disabled = ['php', 'javascript']
         Plug 'sheerun/vim-polyglot'
+        Plug 'uiiaoo/java-syntax.vim'
 
         "Plug 'pangloss/vim-javascript'
         "Plug 'MaxMEllon/vim-jsx-pretty'
@@ -145,6 +154,23 @@ set nocompatible
         "map <C-K> :pyf /usr/local/opt/llvm@11/Toolchains/LLVM11.1.0.xctoolchain/usr/share/clang/clang-format.py<cr>
         "imap <C-K> <c-o>:pyf /usr/local/opt/llvm@11/Toolchains/LLVM11.1.0.xctoolchain/usr/share/clang/clang-format.py<cr>
 
+" => vim codefmt -----------------------------------------------------------------------------------------
+        augroup autoformat_settings
+            "autocmd FileType bzl AutoFormatBuffer buildifier
+            "autocmd FileType c,cpp,proto,javascript,arduino AutoFormatBuffer clang-format
+            "autocmd FileType dart AutoFormatBuffer dartfmt
+            "autocmd FileType go AutoFormatBuffer gofmt
+            "autocmd FileType gn AutoFormatBuffer gn
+            "autocmd FileType html,css,sass,scss,less,json AutoFormatBuffer js-beautify
+            autocmd FileType java AutoFormatBuffer google-java-format
+            "autocmd FileType python AutoFormatBuffer yapf
+            "" Alternative: autocmd FileType python AutoFormatBuffer autopep8
+            "autocmd FileType rust AutoFormatBuffer rustfmt
+            "autocmd FileType vue AutoFormatBuffer prettier
+        augroup END
+        call glaive#Install()
+        Glaive codefmt plugin[mappings]
+        Glaive codefmt google_java_executable="/Users/zhangtielin/.sdkman/candidates/java/14.0.1-open/bin/java -jar /Users/zhangtielin/code/java_projects/plugins/google-java-format-1.11.0-all-deps.jar"
 
 " => move lines ------------------------------------------------------------------------------------------
         nnoremap <A-j> :m .+1<CR>==
@@ -661,8 +687,13 @@ set nocompatible
         set ruler
         set incsearch
         set hlsearch
+        set background=dark
+        "set background=light
         "colorscheme typewriter-night
-        colorscheme onedark
+        "colorscheme hybrid
+        "colorscheme hybrid_reverse
+        colorscheme hybrid_material
+        "colorscheme onedark
         "colorscheme xcodewwdc
         "colorscheme one
         "colorscheme xcodelight
