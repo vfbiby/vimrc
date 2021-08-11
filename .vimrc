@@ -777,7 +777,7 @@ nnoremap J mzJ`z
         nmap <Leader>ev :e ~/.vim/.vimrc<cr>
         nmap <Leader>te :b term<cr>
         map Y y$
-        highlight LineNr ctermfg=grey guifg=grey
+        "highlight LineNr ctermfg=grey guifg=grey
         highlight signcolumn guibg=bg
         "highlight CursorLineNr ctermfg=red guifg=red
 
@@ -1011,7 +1011,7 @@ nnoremap J mzJ`z
         set shortmess+=c
 
         " always show signcolumns
-        set signcolumn=auto
+        set signcolumn=number
 
         " Use tab for trigger completion with characters ahead and navigate.
         " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
