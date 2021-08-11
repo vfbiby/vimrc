@@ -5,6 +5,10 @@ let &packpath = &runtimepath
 set nocompatible
 "let mapleader=","
 
+nnoremap n nzzzv
+nnoremap N Nzzzv
+nnoremap J mzJ`z
+
 " => True Color ------------------------------------------------------------------------------------------
         if (has("nvim"))
           "For Neovim 0.1.3 and 0.1.4 < https://github.com/neovim/neovim/pull/2198 >
@@ -57,6 +61,18 @@ set nocompatible
 " => Plugin ---------------------------------------------------------------
         call plug#begin('~/.vim/plugged')
 
+        " Build the extra binary if cargo exists on your system.
+        Plug 'liuchengxu/vim-clap', { 'do': ':Clap install-binary' }
+
+        Plug 'liuchengxu/vim-which-key'
+        Plug 'kyazdani42/nvim-web-devicons'
+        Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+        Plug 'nvim-lua/popup.nvim'
+        Plug 'nvim-lua/plenary.nvim'
+        Plug 'nvim-telescope/telescope.nvim'
+
+        Plug 'tpope/vim-dadbod'
+        Plug 'mhinz/vim-signify'
         Plug 'google/vim-maktaba'
         Plug 'google/vim-codefmt'
         " Also add Glaive, which is used to configure codefmt's maktaba flags. See
@@ -72,7 +88,7 @@ set nocompatible
         Plug 'rakr/vim-one'
         Plug 'junegunn/vim-easy-align'
         Plug 'joshdick/onedark.vim'
-        Plug 'Xuyuanp/nerdtree-git-plugin'
+        "Plug 'Xuyuanp/nerdtree-git-plugin'
         "Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
         Plug 'AndrewRadev/dsf.vim'
         Plug 'AndrewRadev/tagalong.vim'
@@ -171,6 +187,54 @@ set nocompatible
         call glaive#Install()
         Glaive codefmt plugin[mappings]
         Glaive codefmt google_java_executable="/Users/zhangtielin/.sdkman/candidates/java/14.0.1-open/bin/java -jar /Users/zhangtielin/code/java_projects/plugins/google-java-format-1.11.0-all-deps.jar"
+
+" => vim-clap --------------------------------------------------------------------------------------------
+        let g:clap_theme = 'material_design_dark'
+        let g:clap_provider_grep_opts = '-H --no-heading --vimgrep --smart-case --hidden -g "!.git/"'
+        let g:clap_enable_icon  = 1
+        let g:clap_preview_direction  = 'UD'
+        let g:clap_layout = { 'relative': 'editor', 'row': '17%' }
+
+        "let g:Lf_ShortcutF = "<Space>ff"
+        nnoremap <silent><Space>ff :Clap files<CR>
+        nmap <c-p> <Space>ff
+        nnoremap <silent><Space>fr :Clap recent_files<CR>
+        nnoremap <silent><Space>bb :Clap buffers<CR>
+        nnoremap <silent><Space>cbb :Clap buffers<CR>
+        nnoremap <silent><Space>cbl :Clap blines<CR>
+        nnoremap <silent><Space>cgb :Clap bcommits<CR>
+        nnoremap <silent><Space>cgc :Clap commits<CR>
+        nnoremap <silent><Space>cgd :Clap git_diff_files<CR>
+        nnoremap <silent><Space>cgw :Clap grep2 ++query=<cword><CR>
+        vnoremap <silent><Space>cgv :Clap grep2 ++query=@visual<CR>
+        nnoremap <silent><Space>cl :Clap grep2<CR>
+        nnoremap <silent><Space>cch :Clap hist:<CR>
+        nnoremap <silent><Space>cp :Clap maps<CR>
+        nnoremap <silent><Space>ck :Clap marks<CR>
+        nnoremap <silent><Space>ch :Clap history<CR>
+        nnoremap <silent><Space>cq :Clap quickfix<CR>
+        nnoremap <silent><Space>cr :Clap registers<CR>
+        nnoremap <silent><Space>cy :Clap yanks<CR>
+        nnoremap <silent><Space>cf :Clap filer<CR>
+        nnoremap <silent><Space>cj :Clap jumps<CR>
+        nnoremap <silent><Space>cs :Clap search_history<CR>
+
+
+        " For example, use <C-n>/<C-p> instead of <C-j>/<C-k> to navigate the result.
+        autocmd FileType clap_input inoremap <silent> <buffer> <C-n> <C-R>=clap#navigation#linewise('down')<CR>
+        autocmd FileType clap_input inoremap <silent> <buffer> <C-p> <C-R>=clap#navigation#linewise('up')<CR>
+
+" => Telescope -------------------------------------------------------------------------------------------
+        noremap <silent><Space>tg :Telescope live_grep<CR>
+
+" => Vim-Which-Key ---------------------------------------------------------------------------------------
+        nnoremap <silent><Space> :WhichKey '<Space>'<CR>
+        " By default timeoutlen is 1000 ms
+        set timeoutlen=500
+
+" => signify ---------------------------------------------------------------------------------------------
+        " default updatetime 4000ms is not good for async update
+        set updatetime=100
 
 " => move lines ------------------------------------------------------------------------------------------
         nnoremap <A-j> :m .+1<CR>==
@@ -326,7 +390,7 @@ set nocompatible
     nmap <silent><Space>gb :Gblame<CR>
     nmap <silent><Space>gl :Gpull<CR>
     nmap <silent><Space>gp :Gpull<CR>
-    nmap <silent><Space>glg :Glog<CR>
+    nmap <silent><Space>glg :Gclog<CR>
     nmap <silent><Space>glc :0Gclog<CR>
     nmap <silent><Space>gv :GV<CR>
     nmap <silent><Space>gva :GV<CR>
@@ -611,6 +675,19 @@ set nocompatible
         "map F <Plug>Sneak_F
         "map t <Plug>Sneak_t
         "map T <Plug>Sneak_T
+        " Change the colors
+        highlight Sneak guifg=black guibg=#00C7DF ctermfg=black ctermbg=cyan
+        highlight SneakScope guifg=red guibg=yellow ctermfg=red ctermbg=yellow
+
+        " Cool prompts
+         let g:sneak#prompt = '🕵'
+         "let g:sneak#prompt = '🔎'
+
+        " I like quickscope better for this since it keeps me in the scope of a single line
+         map f <Plug>Sneak_f
+         map F <Plug>Sneak_F
+         map t <Plug>Sneak_t
+         map T <Plug>Sneak_T
 
 " => Indent ---------------------------------------------------------------
         set tabstop=4
@@ -700,7 +777,8 @@ set nocompatible
         nmap <Leader>ev :e ~/.vim/.vimrc<cr>
         nmap <Leader>te :b term<cr>
         map Y y$
-        "highlight LineNr ctermfg=grey guifg=grey
+        highlight LineNr ctermfg=grey guifg=grey
+        highlight signcolumn guibg=bg
         "highlight CursorLineNr ctermfg=red guifg=red
 
 " => Guioptions -----------------------------------------------------------
@@ -835,6 +913,7 @@ set nocompatible
 " => LeaderF --------------------------------------------------------------
         " don't show the help in normal mode
 
+        let g:Lf_CommandMap = {'<C-K>': ['<C-P>'], '<C-J>': ['<C-N>']}
         let g:Lf_WildIgnore = {
               \ 'dir': ['.svn','.git','.hg', 'node_modules'],
               \ 'file': ['*.sw?','~$*','*.bak','*.exe','*.o','*.so','*.py[co]']
@@ -852,11 +931,11 @@ set nocompatible
 
         let g:Lf_UseCache = 0
         let g:Lf_UseMemoryCache = 0
-        let g:Lf_ShortcutF = "<Space>ff"
-        nmap <c-p> <Space>ff
-        noremap <silent><Space>bb :<C-U><C-R>=printf("Leaderf buffer %s", "")<CR><CR>
+        "let g:Lf_ShortcutF = "<Space>ff"
+        "nmap <c-p> <Space>ff
+        "noremap <silent><Space>bb :<C-U><C-R>=printf("Leaderf buffer %s", "")<CR><CR>
+        "noremap <silent><Space>fr :<C-U><C-R>=printf("Leaderf mru %s", "")<CR><CR>
         "noremap <silent><Space>ff :<C-U><C-R>=printf("Leaderf function %s", "")<CR><CR>
-        noremap <silent><Space>fr :<C-U><C-R>=printf("Leaderf mru %s", "")<CR><CR>
         "noremap <silent><C-M> :<C-U><C-R>=printf("Leaderf mru %s", "")<CR><CR>
         "noremap <leader>ft :<C-U><C-R>=printf("Leaderf bufTag %s", "")<CR><CR>
         "noremap <leader>fl :<C-U><C-R>=printf("Leaderf line %s", "")<CR><CR>
@@ -908,9 +987,6 @@ set nocompatible
         " Extract method from selection
         vmap <silent><Space>em :<C-U>call phpactor#ExtractMethod()<CR>
 
-        " Add missing assignments
-        nmap <Space>cf :call phpactor#CopyFile()<CR>
-
         " Change visibility
         nmap <Space>cv :call phpactor#ChangeVisibility()<CR>
 
@@ -935,7 +1011,7 @@ set nocompatible
         set shortmess+=c
 
         " always show signcolumns
-        set signcolumn=no
+        set signcolumn=auto
 
         " Use tab for trigger completion with characters ahead and navigate.
         " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
@@ -984,7 +1060,7 @@ set nocompatible
         autocmd CursorHold * silent call CocActionAsync('highlight')
 
         " Remap for rename current word
-        nmap <Space>cr <Plug>(coc-rename)
+        nmap <Space>lr <Plug>(coc-rename)
 
         " Remap for format selected region
         "xmap <leader>f  <Plug>(coc-format-selected)
@@ -999,13 +1075,13 @@ set nocompatible
         augroup end
 
         " Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
-        xmap <Space>as  <Plug>(coc-codeaction-selected)
-        nmap <Space>as  <Plug>(coc-codeaction-selected)
+        xmap <Space>ls  <Plug>(coc-codeaction-selected)
+        nmap <Space>ls  <Plug>(coc-codeaction-selected)
 
         " Remap for do codeAction of current line
-        nmap <Space>ac  <Plug>(coc-codeaction)
+        nmap <Space>la  <Plug>(coc-codeaction)
         " Fix autofix problem of current line
-        nmap <Space>cf  <Plug>(coc-fix-current)
+        nmap <Space>lf  <Plug>(coc-fix-current)
 
         " Create mappings for function text object, requires document symbols feature of languageserver.
         xmap if <Plug>(coc-funcobj-i)
@@ -1031,21 +1107,21 @@ set nocompatible
 
         " Using CocList
         " Show all diagnostics
-        nnoremap <silent> <space>ca  :<C-u>CocList diagnostics<cr>
+        nnoremap <silent> <space>ld  :<C-u>CocList diagnostics<cr>
         " Manage extensions
-        nnoremap <silent> <space>ce  :<C-u>CocList extensions<cr>
+        nnoremap <silent> <space>le  :<C-u>CocList extensions<cr>
         " Show commands
-        nnoremap <silent> <space>cc  :<C-u>CocList commands<cr>
+        nnoremap <silent> <space>lc  :<C-u>CocList commands<cr>
         " Find symbol of current document
-        nnoremap <silent> <space>co  :<C-u>CocList outline<cr>
+        nnoremap <silent> <space>lo  :<C-u>CocList outline<cr>
         " Search workspace symbols
-        nnoremap <silent> <space>cs  :<C-u>CocList -I symbols<cr>
+        nnoremap <silent> <space>ls  :<C-u>CocList -I symbols<cr>
         " Do default action for next item.
-        nnoremap <silent> <space>cj  :<C-u>CocNext<CR>
+        nnoremap <silent> <space>lj  :<C-u>CocNext<CR>
         " Do default action for previous item.
-        nnoremap <silent> <space>ck  :<C-u>CocPrev<CR>
+        nnoremap <silent> <space>lk  :<C-u>CocPrev<CR>
         " Resume latest coc list
-        nnoremap <silent> <space>cp  :<C-u>CocListResume<CR>
+        nnoremap <silent> <space>lp  :<C-u>CocListResume<CR>
 
         if filereadable(expand("$HOME/.vim/.my.vimrc"))    
             source ~/.vim/.my.vimrc
