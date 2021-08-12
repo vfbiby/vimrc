@@ -9,6 +9,19 @@ nnoremap n nzzzv
 nnoremap N Nzzzv
 nnoremap J mzJ`z
 
+inoremap , ,<c-g>u
+inoremap . .<c-g>u
+inoremap ! !<c-g>u
+inoremap ? ?<c-g>u
+
+vnoremap J :m '>+1<CR>gv=gv
+vnoremap K :m '<-1<CR>gv=gv
+"inoremap <C-j> :m .+1<CR>==
+"inoremap <C-k> :m .-2<CR>==
+"nnoremap <SPace>j :m .+1<CR>==
+"nnoremap <SPace>k :m .-2<CR>==
+
+
 " => True Color ------------------------------------------------------------------------------------------
         if (has("nvim"))
           "For Neovim 0.1.3 and 0.1.4 < https://github.com/neovim/neovim/pull/2198 >
