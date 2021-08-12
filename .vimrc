@@ -66,10 +66,13 @@ nnoremap J mzJ`z
 
         Plug 'liuchengxu/vim-which-key'
         Plug 'kyazdani42/nvim-web-devicons'
+
+        if has('nvim')
         Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
         Plug 'nvim-lua/popup.nvim'
         Plug 'nvim-lua/plenary.nvim'
         Plug 'nvim-telescope/telescope.nvim'
+        endif
 
         Plug 'tpope/vim-dadbod'
         Plug 'mhinz/vim-signify'
