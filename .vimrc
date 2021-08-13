@@ -18,8 +18,8 @@ vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
 inoremap <C-j> <Esc>:m .+1<CR>==i
 inoremap <C-k> <Esc>:m .-2<CR>==i
-nnoremap <SPace>j :m .+1<CR>==
-nnoremap <SPace>k :m .-2<CR>==
+"nnoremap <SPace>j :m .+1<CR>==
+"nnoremap <SPace>k :m .-2<CR>==
 
 
 " => True Color ------------------------------------------------------------------------------------------
@@ -74,6 +74,10 @@ nnoremap <SPace>k :m .-2<CR>==
 " => Plugin ---------------------------------------------------------------
         call plug#begin('~/.vim/plugged')
 
+
+        Plug 'Xuyuanp/scrollbar.nvim'
+        Plug 'junegunn/vim-peekaboo'
+        Plug 'junegunn/vim-emoji'
         " Build the extra binary if cargo exists on your system.
         Plug 'liuchengxu/vim-clap', { 'do': ':Clap install-binary' }
 
@@ -160,8 +164,8 @@ nnoremap <SPace>k :m .-2<CR>==
         "Plug 'xklalala/vim-test-js-mocha-testing'
         "Plug 'skywind3000/vim-keysound'
         "Plug 'logico/typewriter-vim'
-        "Plug 'junegunn/goyo.vim'
-        "Plug 'junegunn/limelight.vim'
+        Plug 'junegunn/goyo.vim'
+        Plug 'junegunn/limelight.vim'
 
         Plug 'kana/vim-textobj-user'
         Plug 'kana/vim-textobj-function'
@@ -204,6 +208,15 @@ nnoremap <SPace>k :m .-2<CR>==
         Glaive codefmt plugin[mappings]
         Glaive codefmt google_java_executable="/Users/zhangtielin/.sdkman/candidates/java/14.0.1-open/bin/java -jar /Users/zhangtielin/code/java_projects/plugins/google-java-format-1.11.0-all-deps.jar"
 
+
+" => scrollbar -------------------------------------------------------------------------------------------
+        augroup ScrollbarInit
+          autocmd!
+          autocmd CursorMoved,VimResized,QuitPre * silent! lua require('scrollbar').show()
+          autocmd WinEnter,FocusGained           * silent! lua require('scrollbar').show()
+          autocmd WinLeave,BufLeave,BufWinLeave,FocusLost            * silent! lua require('scrollbar').clear()
+        augroup end
+
 " => vim-clap --------------------------------------------------------------------------------------------
         let g:clap_theme = 'material_design_dark'
         let g:clap_provider_grep_opts = '-H --no-heading --vimgrep --smart-case --hidden -g "!.git/"'
@@ -225,6 +238,7 @@ nnoremap <SPace>k :m .-2<CR>==
         vnoremap <silent><Space>cgv :Clap grep2 ++query=@visual<CR>
         nnoremap <silent><Space>cl :Clap grep2<CR>
         nnoremap <silent><Space>cch :Clap hist:<CR>
+        nnoremap <silent><Space>ccs :Clap colors<CR>
         nnoremap <silent><Space>cp :Clap maps<CR>
         nnoremap <silent><Space>ck :Clap marks<CR>
         nnoremap <silent><Space>ch :Clap history<CR>
@@ -239,6 +253,21 @@ nnoremap <SPace>k :m .-2<CR>==
         " For example, use <C-n>/<C-p> instead of <C-j>/<C-k> to navigate the result.
         autocmd FileType clap_input inoremap <silent> <buffer> <C-n> <C-R>=clap#navigation#linewise('down')<CR>
         autocmd FileType clap_input inoremap <silent> <buffer> <C-p> <C-R>=clap#navigation#linewise('up')<CR>
+
+" => vim-emoji --------------------------------------------------------------------------------------------
+        let g:gitgutter_sign_added = emoji#for('small_blue_diamond')
+        let g:gitgutter_sign_modified = emoji#for('small_orange_diamond')
+        let g:gitgutter_sign_removed = emoji#for('small_red_triangle')
+        let g:gitgutter_sign_modified_removed = emoji#for('collision')
+        set completefunc=emoji#complete
+
+
+" => limelight -------------------------------------------------------------------------------------------
+        nnoremap <silent><Space>ll :Limelight!!<CR>
+
+" => Goyo ------------------------------------------------------------------------------------------------
+        "let g:goyo_width=120
+        nnoremap <silent><Space>go :Goyo<CR>
 
 " => Telescope -------------------------------------------------------------------------------------------
         noremap <silent><Space>tg :Telescope live_grep<CR>
@@ -404,8 +433,8 @@ nnoremap <SPace>k :m .-2<CR>==
     nmap <silent><Space>gr :Gread<CR>
     nmap <silent><Space>gd :Gdiff<CR>
     nmap <silent><Space>gb :Gblame<CR>
-    nmap <silent><Space>gl :Gpull<CR>
-    nmap <silent><Space>gp :Gpull<CR>
+    nmap <silent><Space>gl :Git pull<CR>
+    nmap <silent><Space>gp :Git push<CR>
     nmap <silent><Space>glg :Gclog<CR>
     nmap <silent><Space>glc :0Gclog<CR>
     nmap <silent><Space>gv :GV<CR>
@@ -749,8 +778,8 @@ nnoremap <SPace>k :m .-2<CR>==
         syntax on
         filetype plugin on
         set mouse=a
-        set nu
-        set rnu
+        "set nu
+        "set rnu
         nmap <silent><space>wm <c-w>\|
         nmap <silent><space>we <c-w>=
         nmap <silent><space>wt :tabnew %<cr>
@@ -758,10 +787,10 @@ nnoremap <SPace>k :m .-2<CR>==
         nmap <silent><Space>fS :wa<cr>
         nmap <silent><Space>jn i<cr><Esc>
         nmap <silent><Space>jo i<cr><Esc>k$
-        nmap <silent>sv :vsp<cr>
-        nmap <silent>sg :sp<cr>
-        nmap <silent>sq :q<cr>
-        nmap <silent>sQ :qa<cr>
+        nmap <silent><Space>sv :vsp<cr>
+        nmap <silent><Space>sg :sp<cr>
+        nmap <silent><Space>sq :q<cr>
+        nmap <silent><Space>sQ :qa<cr>
         nmap <silent>U <c-r>
         nmap <silent><c-h> <c-w>h
         nmap <silent><c-j> <c-w>j
@@ -785,10 +814,10 @@ nnoremap <SPace>k :m .-2<CR>==
         "colorscheme typewriter-night
         "colorscheme hybrid
         "colorscheme hybrid_reverse
-        colorscheme hybrid_material
+        "colorscheme hybrid_material
         "colorscheme onedark
         "colorscheme xcodewwdc
-        "colorscheme one
+        colorscheme one
         "colorscheme xcodelight
         nmap <Leader>ev :e ~/.vim/.vimrc<cr>
         nmap <Leader>te :b term<cr>
