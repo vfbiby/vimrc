@@ -23,5 +23,8 @@
     "typescript": ["typescriptreact"],
     "javascript": ["typescriptreact"]
   },
-  "emmet.includeLanguages": { "javascript": "javascriptreact" }
+  "emmet.includeLanguages": {
+    "javascript": "javascriptreact"
+  },
+  "java.configuration.updateBuildConfiguration": "automatic"
 }
