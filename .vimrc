@@ -75,7 +75,8 @@ inoremap <C-k> <Esc>:m .-2<CR>==i
         call plug#begin('~/.vim/plugged')
 
 
-        Plug 'Xuyuanp/scrollbar.nvim'
+        Plug 'voldikss/vim-translator'
+        "Plug 'Xuyuanp/scrollbar.nvim'
         Plug 'junegunn/vim-peekaboo'
         Plug 'junegunn/vim-emoji'
         " Build the extra binary if cargo exists on your system.
@@ -208,6 +209,22 @@ inoremap <C-k> <Esc>:m .-2<CR>==i
         Glaive codefmt plugin[mappings]
         Glaive codefmt google_java_executable="/Users/zhangtielin/.sdkman/candidates/java/14.0.1-open/bin/java -jar /Users/zhangtielin/code/java_projects/plugins/google-java-format-1.11.0-all-deps.jar"
 
+" => coc-marketplace -------------------------------------------------------------------------------------
+        nnoremap <silent><Space>lmk :CocList marketplace<CR>
+
+" => translator ------------------------------------------------------------------------------------------
+        """ Configuration example
+        " Echo translation in the cmdline
+        nmap <silent><Space>tst <Plug>Translate
+        vmap <silent><Space>tst <Plug>TranslateV
+        " Display translation in a window
+        nmap <silent><Space>tsw <Plug>TranslateW
+        vmap <silent><Space>tsw <Plug>TranslateWV
+        " Replace the text with translation
+        nmap <silent><Space>tsr <Plug>TranslateR
+        vmap <silent><Space>tsr <Plug>TranslateRV
+        " Translate the text in clipboard
+        nmap <silent><Space>tsx <Plug>TranslateX
 
 " => scrollbar -------------------------------------------------------------------------------------------
         augroup ScrollbarInit
@@ -326,6 +343,7 @@ inoremap <C-k> <Esc>:m .-2<CR>==i
                                 \   'floatingTop': {
                                 \     'position': 'floating',
                                 \     'floating-position': 'center-top',
+                                \     'floating-width': 80,
                                 \     'open-action-strategy': 'sourceWindow',
                                 \   },
                                 \   'floatingLeftside': {
@@ -350,7 +368,7 @@ inoremap <C-k> <Esc>:m .-2<CR>==i
 
         " Use preset argument to open it
         nnoremap <silent><space>ed :CocCommand explorer --preset .vim<CR>
-        nnoremap <silent><space>ef :CocCommand explorer --preset floating<CR>
+        nnoremap <silent><space>ef :CocCommand explorer --preset floatingTop<CR>
         nnoremap <silent><space>ec :CocCommand explorer --preset cocConfig<CR>
         nnoremap <silent><space>eb :CocCommand explorer --preset buffer<CR>
 
@@ -778,8 +796,8 @@ inoremap <C-k> <Esc>:m .-2<CR>==i
         syntax on
         filetype plugin on
         set mouse=a
-        "set nu
-        "set rnu
+        set nu
+        set rnu
         nmap <silent><space>wm <c-w>\|
         nmap <silent><space>we <c-w>=
         nmap <silent><space>wt :tabnew %<cr>
@@ -1129,10 +1147,10 @@ inoremap <C-k> <Esc>:m .-2<CR>==i
         nmap <Space>lf  <Plug>(coc-fix-current)
 
         " Create mappings for function text object, requires document symbols feature of languageserver.
-        xmap if <Plug>(coc-funcobj-i)
-        xmap af <Plug>(coc-funcobj-a)
-        omap if <Plug>(coc-funcobj-i)
-        omap af <Plug>(coc-funcobj-a)
+        "xmap if <Plug>(coc-funcobj-i)
+        "xmap af <Plug>(coc-funcobj-a)
+        "omap if <Plug>(coc-funcobj-i)
+        "omap af <Plug>(coc-funcobj-a)
 
         " Use <TAB> for select selections ranges, needs server support, like: coc-tsserver, coc-python
         "nmap <silent> <TAB> <Plug>(coc-range-select)
