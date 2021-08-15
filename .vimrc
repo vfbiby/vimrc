@@ -76,7 +76,7 @@ inoremap <C-k> <Esc>:m .-2<CR>==i
 
 
         Plug 'voldikss/vim-translator'
-        "Plug 'Xuyuanp/scrollbar.nvim'
+        Plug 'Xuyuanp/scrollbar.nvim'
         Plug 'junegunn/vim-peekaboo'
         Plug 'junegunn/vim-emoji'
         " Build the extra binary if cargo exists on your system.
@@ -938,6 +938,8 @@ inoremap <C-k> <Esc>:m .-2<CR>==i
         nmap <silent> <Space>kl :TestLast<CR>
         "Visit the last test
         nmap <silent> <Space>kv :TestVisit<CR>
+
+        nmap <silent> <Space>kg :let g:test#java#runner='gradletest'<CR>
 
         "let test#enabled_runners = ["javascript#mocha"]
         "let g:test#javascript#mocha#file_pattern = '.*\.spec\.js'
