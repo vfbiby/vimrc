@@ -4,6 +4,7 @@ let &packpath = &runtimepath
 
 set nocompatible
 "let mapleader=","
+set showtabline=2
 
 nnoremap n nzzzv
 nnoremap N Nzzzv
@@ -75,6 +76,7 @@ inoremap <C-k> <Esc>:m .-2<CR>==i
         call plug#begin('~/.vim/plugged')
 
 
+        Plug 'mg979/vim-xtabline'
         Plug 'voldikss/vim-translator'
         "Plug 'Xuyuanp/scrollbar.nvim'
         Plug 'junegunn/vim-peekaboo'
@@ -210,6 +212,16 @@ inoremap <C-k> <Esc>:m .-2<CR>==i
         Glaive codefmt plugin[mappings]
         Glaive codefmt google_java_executable="/Users/zhangtielin/.sdkman/candidates/java/14.0.1-open/bin/java -jar /Users/zhangtielin/code/java_projects/plugins/google-java-format-1.11.0-all-deps.jar"
 
+" => xtabline --------------------------------------------------------------------------------------------
+    let g:xtabline_settings = get(g:, 'xtabline_settings', {})
+    let g:xtabline_settings.tabline_modes = ['buffers', 'tabs', 'arglist']
+    let g:xtabline_settings.buffers_paths = 0
+    let g:xtabline_settings.current_tab_paths = 0
+    let g:xtabline_settings.other_tabs_paths = 0
+    let g:xtabline_settings.mode_labels = 'all'
+    let g:xtabline_settings.show_right_corner = 0
+
+
 " => coc-marketplace -------------------------------------------------------------------------------------
         nnoremap <silent><Space>lmk :CocList marketplace<CR>
 
@@ -292,6 +304,7 @@ inoremap <C-k> <Esc>:m .-2<CR>==i
 
 " => Vim-Which-Key ---------------------------------------------------------------------------------------
         nnoremap <silent><Space> :WhichKey '<Space>'<CR>
+        nnoremap <silent><leader> :WhichKey '<leader>'<CR>
         " By default timeoutlen is 1000 ms
         set timeoutlen=500
 
@@ -372,6 +385,11 @@ inoremap <C-k> <Esc>:m .-2<CR>==i
         nnoremap <silent><space>ef :CocCommand explorer --preset floatingTop<CR>
         nnoremap <silent><space>ec :CocCommand explorer --preset cocConfig<CR>
         nnoremap <silent><space>eb :CocCommand explorer --preset buffer<CR>
+        nnoremap <silent><Space>ft :CocCommand explorer<CR>
+        nnoremap <silent><Space>fb :CocCommand ftree.open<CR>
+        "map <silent><Space>ft :NERDTreeToggle<CR>
+        "map <silent><Space>fv :NERDTreeFind<CR>
+        nnoremap <silent><Space>fv :call CocAction('runCommand', 'explorer.doAction', 'closest', ['reveal:0'], [['relative', 0, 'file']])<CR>
 
         " List all presets
         nnoremap <silent><space>el :CocList explPresets<CR>
