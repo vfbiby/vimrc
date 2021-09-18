@@ -76,7 +76,7 @@ inoremap <C-k> <Esc>:m .-2<CR>==i
 
 
         Plug 'voldikss/vim-translator'
-        Plug 'Xuyuanp/scrollbar.nvim'
+        "Plug 'Xuyuanp/scrollbar.nvim'
         Plug 'junegunn/vim-peekaboo'
         Plug 'junegunn/vim-emoji'
         " Build the extra binary if cargo exists on your system.
@@ -199,7 +199,8 @@ inoremap <C-k> <Esc>:m .-2<CR>==i
             "autocmd FileType go AutoFormatBuffer gofmt
             "autocmd FileType gn AutoFormatBuffer gn
             "autocmd FileType html,css,sass,scss,less,json AutoFormatBuffer js-beautify
-            autocmd FileType java AutoFormatBuffer google-java-format
+            "autocmd FileType java AutoFormatBuffer google-java-format
+            autocmd FileType java set foldlevel=0
             "autocmd FileType python AutoFormatBuffer yapf
             "" Alternative: autocmd FileType python AutoFormatBuffer autopep8
             "autocmd FileType rust AutoFormatBuffer rustfmt
@@ -915,14 +916,7 @@ inoremap <C-k> <Esc>:m .-2<CR>==i
           let col = col('.') - 1
           return !col || getline('.')[col - 1]  =~# '\s'
         endfunction
-        "let g:coc_snippet_next = '<tab>'
-
-" => NERDTree ---------------------------------------------------------------
-    map <silent><Space>ft :CocCommand explorer<CR>
-    map <silent><Space>fb :CocCommand ftree.open<CR>
-    "map <silent><Space>ft :NERDTreeToggle<CR>
-    "map <silent><Space>fv :NERDTreeFind<CR>
-    nnoremap <silent><Space>fv :call CocAction('runCommand', 'explorer.doAction', 'closest', ['reveal:0'], [['relative', 0, 'file']])<CR>
+        let g:coc_snippet_next = '<tab>'
 
 " => Vim-test ---------------------------------------------------------------
         "let g:test#javascript#runner = 'mocha'
@@ -1076,7 +1070,7 @@ inoremap <C-k> <Esc>:m .-2<CR>==i
         set shortmess+=c
 
         " always show signcolumns
-        set signcolumn=number
+        set signcolumn=yes
 
         " Use tab for trigger completion with characters ahead and navigate.
         " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
@@ -1098,7 +1092,9 @@ inoremap <C-k> <Esc>:m .-2<CR>==i
         " Coc only does snippet and additional edit on confirm.
         inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
         " Or use `complete_info` if your vim support it, like:
-        inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+        "inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+        inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
+				\: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
         " Use `[g` and `]g` to navigate diagnostics
         nmap <silent> [g <Plug>(coc-diagnostic-prev)
@@ -1126,6 +1122,7 @@ inoremap <C-k> <Esc>:m .-2<CR>==i
 
         " Remap for rename current word
         nmap <Space>lr <Plug>(coc-rename)
+        nmap <Space>lx <Plug>(coc-refactor)
 
         " Remap for format selected region
         "xmap <leader>f  <Plug>(coc-format-selected)
